@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Elsa</string>
+    <string name="app_name">Eagle UN</string>
+
+    <!-- Login Activity -->
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -9,4 +11,12 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <!-- Navigation manu on Main Activity-->
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="title_activity_main">MainActivity</string>
+
 </resources>
