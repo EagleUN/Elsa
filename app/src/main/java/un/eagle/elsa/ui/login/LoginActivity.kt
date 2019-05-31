@@ -8,6 +8,7 @@ import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -19,10 +20,15 @@ import un.eagle.elsa.R
 
 class LoginActivity : AppCompatActivity() {
 
+    companion object {
+        const val TAG = "Eagle.LoginActivity";
+    }
+
     private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate");
 
         setContentView(R.layout.activity_login)
 
