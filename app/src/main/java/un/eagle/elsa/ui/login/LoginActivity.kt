@@ -111,6 +111,13 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
+
+    /**
+     * Disables going back to main activity from LoginActivity with the back key.
+     */
+    override fun onBackPressed() {
+        moveTaskToBack(true);
+    }
 }
 
 /**
