@@ -20,7 +20,9 @@
 
         <activity
                 android:name=".activities.WritePostActivity"
-                android:windowSoftInputMode="adjustResize">
+                android:windowSoftInputMode="adjustResize"
+                android:label="@string/title_write_post_activity">
+
         </activity>
 
         <activity

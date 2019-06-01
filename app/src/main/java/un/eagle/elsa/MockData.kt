@@ -33,8 +33,10 @@ class MockData {
             posts.add(Post("Diego", "Arki too hard :'v"))
             posts.add(Post("Mater Chris", "zolo rails loka"))
             posts.add(Post("Laura", "rapunzel es mi princesa favorita"))
+            posts.add(Post("Pambele", "Es mejor ser rico que ser pobre", "Juan Chaves"))
             posts.add(Post("Juan", "Moana to mama"))
             posts.add(Post("Chaves", "soy 100tifiko en gugol clau"))
+            posts.add(Post("Juan Diego", "Finde de rumba", "Master Chris"))
             posts.add(Post("Chili", "Chillin"))
             posts.add(Post("Diego", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."))
             return posts

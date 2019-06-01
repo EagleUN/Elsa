@@ -13,9 +13,12 @@ class NotificationsAdapter(private val notifications: List<Notification>) : Recy
 
     override fun getItemCount(): Int {  return notifications.size }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, index: Int): NotificationViewHolder {
-        val item = notifications[index]
-        val id = if ( item.isShare() ) R.layout.item_notification_share else R.layout.item_notification_follow
+    override fun getItemViewType(index: Int): Int {
+        return notifications[index].notificationType
+    }
+
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): NotificationViewHolder {
+        val id = if ( viewType == Notification.SHARE ) R.layout.item_notification_share else R.layout.item_notification_follow
         val v = LayoutInflater.from(viewGroup.context).inflate(id, viewGroup, false)
         return NotificationViewHolder(v)
 
