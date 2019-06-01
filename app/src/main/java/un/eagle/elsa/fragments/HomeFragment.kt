@@ -10,26 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import un.eagle.elsa.MockData
 import un.eagle.elsa.R
 import un.eagle.elsa.activities.WritePostActivity
 import un.eagle.elsa.adapters.PostsAdapter
 import un.eagle.elsa.data.model.Post
 
 class HomeFragment : Fragment() {
-
-    fun getSamplePosts() : ArrayList<Post> {
-        val posts = ArrayList<Post>()
-
-        posts.add(Post("Tomi Tomi", "Vamo a jugar, vamo a jugar, vamo a jugar"))
-        posts.add(Post("Diego", "Arki too hard :'v"))
-        posts.add(Post("Mater Chris", "zolo rails loka"))
-        posts.add(Post("Laura", "rapunzel es mi princesa favorita"))
-        posts.add(Post("Juan", "Moana to mama"))
-        posts.add(Post("Chaves", "soy 100tifiko en gugol clau"))
-        posts.add(Post("Chili", "Chillin"))
-        posts.add(Post("Diego", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."))
-        return posts
-    }
 
 
     /**
@@ -51,7 +38,7 @@ class HomeFragment : Fragment() {
 
         val writePostButton : FloatingActionButton = v.findViewById(R.id.writePostButton)
 
-        val data = getSamplePosts()
+        val data = MockData.posts()
 
         val postsAdapter = PostsAdapter(data)
         postsView.adapter = postsAdapter
