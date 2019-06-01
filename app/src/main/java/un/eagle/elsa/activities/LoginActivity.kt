@@ -1,4 +1,4 @@
-package un.eagle.elsa.ui.login
+package un.eagle.elsa.activities
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -17,6 +17,9 @@ import android.widget.ProgressBar
 import android.widget.Toast
 
 import un.eagle.elsa.R
+import un.eagle.elsa.ui.login.LoggedInUserView
+import un.eagle.elsa.ui.login.LoginViewModel
+import un.eagle.elsa.ui.login.LoginViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
 

@@ -1,10 +1,11 @@
-package un.eagle.elsa
+package un.eagle.elsa.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import un.eagle.elsa.R
 
 class WritePostActivity : AppCompatActivity() {
 
