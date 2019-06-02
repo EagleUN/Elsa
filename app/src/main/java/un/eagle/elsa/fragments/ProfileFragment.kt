@@ -26,7 +26,6 @@ class ProfileFragment : Fragment() {
         activity?.let {
             val intent = Intent (it, FollowingActivity::class.java)
             it.startActivity(intent)
-
         }
     }
 

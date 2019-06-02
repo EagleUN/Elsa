@@ -10,31 +10,31 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
+                android:name=".activities.SingUpActivity"
+                android:label="@string/title_activity_sing_up">
+        </activity>
+        <activity
                 android:name=".activities.MainActivity"
                 android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
                 android:name=".activities.WritePostActivity"
-                android:windowSoftInputMode="adjustResize"
-                android:label="@string/title_write_post_activity">
-
+                android:label="@string/title_write_post_activity"
+                android:windowSoftInputMode="adjustResize">
         </activity>
-
         <activity
-                android:name=".activities.LoginActivity"
+                android:name=".activities.SignInActivity"
                 android:label="@string/title_activity_login">
         </activity>
-
         <activity
                 android:name=".activities.FollowingActivity"
                 android:label="@string/title_following_activity">
         </activity>
-
         <activity
                 android:name=".activities.FollowersActivity"
                 android:label="@string/title_followers_activity">

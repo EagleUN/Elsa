@@ -3,6 +3,7 @@ package un.eagle.elsa.activities
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
@@ -21,29 +22,30 @@ import un.eagle.elsa.ui.login.LoggedInUserView
 import un.eagle.elsa.ui.login.LoginViewModel
 import un.eagle.elsa.ui.login.LoginViewModelFactory
 
-class LoginActivity : AppCompatActivity() {
+class SignInActivity : AppCompatActivity() {
 
     companion object {
-        const val TAG = "Eagle.LoginActivity";
+        const val TAG = "Eagle.SignInActivity"
     }
 
     private lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate");
+        Log.d(TAG, "onCreate")
 
         setContentView(R.layout.activity_login)
 
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
-        val login = findViewById<Button>(R.id.login)
+        val login = findViewById<Button>(R.id.login_button)
         val loading = findViewById<ProgressBar>(R.id.loading)
+        var goToSignUp = findViewById<Button>(R.id.goToSignUp_button)
 
         loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
-        loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
+        loginViewModel.loginFormState.observe(this@SignInActivity, Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
@@ -57,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
+        loginViewModel.loginResult.observe(this@SignInActivity, Observer {
             val loginResult = it ?: return@Observer
 
             loading.visibility = View.GONE
@@ -104,6 +106,13 @@ class LoginActivity : AppCompatActivity() {
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
+
+        goToSignUp.setOnClickListener { goToSignUpActivity() }
+    }
+
+    private fun goToSignUpActivity() {
+        val intent = Intent (this, SingUpActivity::class.java)
+        startActivity(intent)
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
@@ -122,7 +131,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * Disables going back to main activity from LoginActivity with the back key.
+     * Disables going back to other activity from SignInActivity with the back key.
      */
     override fun onBackPressed() {
         moveTaskToBack(true);

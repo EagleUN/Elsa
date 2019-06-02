@@ -1,5 +1,6 @@
 package un.eagle.elsa.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
@@ -34,12 +35,24 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private fun goToSignInActivity() {
+        val intent = Intent (this, SignInActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
-        navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        loadFragment(HomeFragment())
+
+        //check if user is signed in
+        if ( false ) {
+            setContentView(R.layout.activity_main)
+            val navView: BottomNavigationView = findViewById(R.id.nav_view)
+            navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+            loadFragment(HomeFragment())
+        };
+        else {
+            goToSignInActivity()
+        }
     }
 }
