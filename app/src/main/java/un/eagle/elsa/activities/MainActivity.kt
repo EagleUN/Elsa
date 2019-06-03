@@ -9,6 +9,7 @@ import un.eagle.elsa.R
 import un.eagle.elsa.fragments.HomeFragment
 import un.eagle.elsa.fragments.NotificationsFragment
 import un.eagle.elsa.fragments.ProfileFragment
+import un.eagle.elsa.graphql.Client
 
 class MainActivity : AppCompatActivity() {
 
@@ -54,5 +55,7 @@ class MainActivity : AppCompatActivity() {
         else {
             goToSignInActivity()
         }
+
+        Client.fetchAllUsers()
     }
 }

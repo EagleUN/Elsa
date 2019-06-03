@@ -1,0 +1,11 @@
+query queryAllUsersQuery {
+    allUsers {
+        total
+        list {
+            id
+            name
+            last_name
+            email
+        }
+    }
+}
