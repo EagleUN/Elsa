@@ -54,6 +54,7 @@
     <string name="hint_password_confirmation">Password confirmation</string>
     <string name="action_sign_up">Sign up</string>
     <string name="already_have_account">Already have an account? Log in here:</string>
+    <string name="user_created_successfully">Account created successfully</string>
 
     <!-- ProfileFragment -->
     <string name="profile_name">Name:</string>

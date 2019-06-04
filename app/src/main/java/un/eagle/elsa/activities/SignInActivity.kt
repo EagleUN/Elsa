@@ -112,7 +112,9 @@ class SignInActivity : AppCompatActivity() {
 
     private fun goToSignUpActivity() {
         val intent = Intent (this, SingUpActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
+        finish()
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {

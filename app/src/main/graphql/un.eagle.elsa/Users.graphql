@@ -9,3 +9,23 @@ query queryAllUsersQuery {
         }
     }
 }
+
+mutation createUserMutation (
+    $name: String!,
+    $last_name: String!,
+    $email: String!,
+    $password: String!,
+    $password_confirmation: String!) {
+    createUser(user: {
+        name: $name,
+        last_name: $last_name,
+        email: $email,
+        password: $password,
+        password_confirmation: $password_confirmation
+    }){
+        id
+        name
+        last_name
+        email
+    }
+}

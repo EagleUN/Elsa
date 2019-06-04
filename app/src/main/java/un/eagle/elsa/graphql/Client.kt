@@ -7,13 +7,15 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import org.jetbrains.annotations.NotNull
+import un.eagle.elsa.Constants
+import un.eagle.elsa.CreateUserMutation
 import un.eagle.elsa.QueryAllUsersQuery
 
 
 object Client
 {
     const val TAG = "Eagle.Client"
-    const val URL = "http://35.232.95.82:5000/graphql"
+    const val URL = Constants.GRAPHQL_URL
 
     val apollo: ApolloClient = reset()
 
@@ -38,6 +40,26 @@ object Client
             .build()
     }
 
+    fun createNewUser(
+        name: String,
+        lastName: String,
+        email: String,
+        password: String,
+        passwordConfirmation: String,
+        callback: ApolloCall.Callback<CreateUserMutation.Data> ) {
+        Log.d(TAG, "createNewUser")
+        apollo.mutate(
+            CreateUserMutation.builder()
+                .name(name)
+                .last_name(lastName)
+                .password(password)
+                .password_confirmation(passwordConfirmation)
+                .email(email)
+                .build()
+        ).enqueue(callback)
+    }
+
+    //only a test method, not used
     fun fetchAllUsers() {
         Log.d(TAG, "fecthAllUsers")
         apollo.query(
@@ -51,7 +73,12 @@ object Client
 
                 Log.d(TAG, dataResponse.data().toString())
 
-                val data = dataResponse.data()
+                val data  = dataResponse.data()?.allUsers()
+                Log.d(TAG, "Total: " + data?.total() )
+
+                data?.list()?.forEach {
+                    Log.d(TAG, "User: " + it.name() + " " + it.last_name() )
+                }
 
             }
         })
