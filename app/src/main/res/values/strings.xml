@@ -26,6 +26,7 @@
     <string name="title_write_post_activity">Write post</string>
     <string name="post_hint">Write your post</string>
     <string name="post_button">Post</string>
+    <string name="posted_successfully">Posted successfully </string>
 
     <!-- Test strings-->
     <string name="test_post_author">Victor Ramires</string>

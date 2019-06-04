@@ -119,6 +119,17 @@ object Client
         ).enqueue(callback)
     }
 
+    fun createPost(
+        userId: String,
+        content: String,
+        callback: ApolloCall.Callback<CreatePostMutation.Data>
+    ) {
+        Log.d(TAG, "createPost($userId,$content)")
+        apollo.mutate(
+            CreatePostMutation.builder().userId(userId).content(content).build()
+        ).enqueue(callback)
+    }
+
     //only a test method, not used
     fun getAllUsers() {
         Log.d(TAG, "getAllUsers")

@@ -89,3 +89,9 @@ query queryProfileFeedForUser($id: String!) {
     }
 }
 
+mutation createPostMutation($userId: String!, $content: String!) {
+    createPost(post: {content: $content, idCreator: $userId}) {
+        id
+        idCreator
+    }
+}
