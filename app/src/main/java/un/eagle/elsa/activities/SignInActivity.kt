@@ -10,22 +10,55 @@ import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
+import un.eagle.elsa.CreateNewUserSessionMutation
+import un.eagle.elsa.ElsaPreferences
 
 import un.eagle.elsa.R
-import un.eagle.elsa.ui.login.LoggedInUserView
-import un.eagle.elsa.ui.login.LoginViewModel
-import un.eagle.elsa.ui.login.LoginViewModelFactory
+import un.eagle.elsa.graphql.Client
 
 class SignInActivity : AppCompatActivity() {
 
     companion object {
         const val TAG = "Eagle.SignInActivity"
+    }
+
+    data class LoginViewModel(val email: String, val password: String, val login : Button) {
+        fun loginDataChanged(username: String, password: String) {
+            if (!isEmailValid(username)) {
+                // R.string.invalid_username
+                login.isEnabled = false
+            } else if (!isPasswordValid(password)) {
+                //R.string.invalid_password
+                login.isEnabled = false
+            } else {
+                //isDataValid = true
+                login.isEnabled = true
+            }
+        }
+
+        // A placeholder username validation check
+        private fun isEmailValid(username: String): Boolean {
+            return if (username.contains('@')) {
+                Patterns.EMAIL_ADDRESS.matcher(username).matches()
+            } else {
+                username.isNotBlank()
+            }
+        }
+
+        // A placeholder password validation check
+        private fun isPasswordValid(password: String): Boolean {
+            return password.length > 8
+        }
     }
 
     private lateinit var loginViewModel: LoginViewModel
@@ -41,40 +74,7 @@ class SignInActivity : AppCompatActivity() {
         val login = findViewById<Button>(R.id.login_button)
         val loading = findViewById<ProgressBar>(R.id.loading)
         var goToSignUp = findViewById<Button>(R.id.goToSignUp_button)
-
-        loginViewModel = ViewModelProviders.of(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
-
-        loginViewModel.loginFormState.observe(this@SignInActivity, Observer {
-            val loginState = it ?: return@Observer
-
-            // disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
-
-            if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
-            }
-            if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
-            }
-        })
-
-        loginViewModel.loginResult.observe(this@SignInActivity, Observer {
-            val loginResult = it ?: return@Observer
-
-            loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
-            }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
-            }
-            setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            finish()
-        })
-
+        loginViewModel = LoginViewModel("","",login)
         username.afterTextChanged {
             loginViewModel.loginDataChanged(
                 username.text.toString(),
@@ -93,7 +93,7 @@ class SignInActivity : AppCompatActivity() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        loginViewModel.login(
+                        login(
                             username.text.toString(),
                             password.text.toString()
                         )
@@ -103,11 +103,47 @@ class SignInActivity : AppCompatActivity() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+                login(username.text.toString(), password.text.toString())
             }
         }
 
         goToSignUp.setOnClickListener { goToSignUpActivity() }
+    }
+
+    fun login(username: String, password: String) {
+        // can be launched in a separate asynchronous job
+
+        val context = this
+        val loginCallback = object : ApolloCall.Callback<CreateNewUserSessionMutation.Data> (){
+            override fun onFailure(e: ApolloException) {
+                showLoginFailed(R.string.login_failed)
+            }
+
+            override fun onResponse(response: Response<CreateNewUserSessionMutation.Data>) {
+                val r = response.data()?.createNewUserSession()
+                val userName = r?.name()
+                val userId = r?.id()
+                if ( r == null || userName == null || userId == null ) {
+                    showLoginFailed(R.string.login_failed)
+                }
+                else {
+
+                    ElsaPreferences.setUserId(context, userId)
+                    showLogginSuccessful(userName)
+                    goToMainActivity()
+                }
+
+            }
+        }
+
+        Client.createUserSession(email=username, password = password, callback = loginCallback  )
+    }
+
+    private fun goToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
     }
 
     private fun goToSignUpActivity() {
@@ -117,26 +153,27 @@ class SignInActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        // TODO : initiate successful logged in experience
-        Toast.makeText(
-            applicationContext,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
-        ).show()
+    private fun showLogginSuccessful(name: String) {
+        val activity = this
+        this.runOnUiThread {
+            val welcome = getString(R.string.welcome)
+            Toast.makeText(activity, "$welcome $name", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+        val activity = this
+        this.runOnUiThread {
+            Toast.makeText(activity, errorString, Toast.LENGTH_SHORT).show()
+        }
     }
 
     /**
      * Disables going back to other activity from SignInActivity with the back key.
      */
     override fun onBackPressed() {
-        moveTaskToBack(true);
+        moveTaskToBack(true)
     }
 }
 

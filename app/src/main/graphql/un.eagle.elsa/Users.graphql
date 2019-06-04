@@ -29,3 +29,28 @@ mutation createUserMutation (
         email
     }
 }
+
+query userListQuery ($userId: String!) {
+    userList(userId: $userId) {
+        count
+        otherUsers {
+            id
+            name
+            lastName
+            iFollow
+            followsMe
+        }
+    }
+}
+
+mutation createNewUserSessionMutation(
+    $email: String!,
+    $password: String!
+){
+    createNewUserSession(userSession: { email: $email, password: $password} ) {
+        id
+        name
+        last_name
+        email
+    }
+}

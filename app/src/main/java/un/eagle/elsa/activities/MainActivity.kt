@@ -1,17 +1,17 @@
 package un.eagle.elsa.activities
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import un.eagle.elsa.Constants
+import un.eagle.elsa.ElsaPreferences
 import un.eagle.elsa.R
 import un.eagle.elsa.fragments.HomeFragment
 import un.eagle.elsa.fragments.NotificationsFragment
 import un.eagle.elsa.fragments.ProfileFragment
+import un.eagle.elsa.fragments.OtherUserListFragment
 import un.eagle.elsa.graphql.Client
 
 class MainActivity : AppCompatActivity() {
@@ -34,6 +34,10 @@ class MainActivity : AppCompatActivity() {
                 loadFragment(NotificationsFragment())
                 return@OnNavigationItemSelectedListener true
             }
+            R.id.navigation_userList -> {
+                loadFragment(OtherUserListFragment())
+                return@OnNavigationItemSelectedListener true
+            }
         }
         false
     }
@@ -51,9 +55,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val preferences = getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE)
-        val userId = preferences.getString(Constants.Preferences.USER_ID, "")
-
+        val userId = ElsaPreferences.getUserId(this)
         Log.d(TAG, "userId: $userId")
 
         //check if user is signed in
@@ -68,7 +70,5 @@ class MainActivity : AppCompatActivity() {
         {
             goToSignInActivity()
         }
-
-        Client.fetchAllUsers()
     }
 }

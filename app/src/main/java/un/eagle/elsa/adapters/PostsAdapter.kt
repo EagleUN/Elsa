@@ -58,6 +58,6 @@ class PostsAdapter(private val posts: ArrayList<Post>) : RecyclerView.Adapter<Re
     class ShareViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val authorTextView   = v.findViewById(R.id.postAuthor)  as TextView
         val contentTextView  = v.findViewById(R.id.postContent) as TextView
-        val sharedByTextView = v.findViewById(R.id.sharedBy) as TextView
+        val sharedByTextView = v.findViewById(R.id.itemShare_sharedBy) as TextView
     }
 }

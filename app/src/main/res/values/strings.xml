@@ -16,6 +16,7 @@
     <!-- Navigation menu on MainActivity-->
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
+    <string name="title_userList">User list</string>
     <string name="title_notifications">Notifications</string>
 
     <!-- HomeFragment -->
@@ -67,5 +68,10 @@
     <!-- NotificationsFragment -->
     <string name="share_notification_text">%1$s shared your post</string>
     <string name="follow_notification_text">%1$s is now following you</string>
+
+    <!-- OtherUserListFragment -->
+    <string name="action_follow">Follow</string>
+    <string name="follows_me">Follows me</string>
+    <string name="does_not_follow_me">Does not follow me</string>
 
 </resources>

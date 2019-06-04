@@ -7,9 +7,7 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import org.jetbrains.annotations.NotNull
-import un.eagle.elsa.Constants
-import un.eagle.elsa.CreateUserMutation
-import un.eagle.elsa.QueryAllUsersQuery
+import un.eagle.elsa.*
 
 
 object Client
@@ -59,9 +57,30 @@ object Client
         ).enqueue(callback)
     }
 
+    fun createUserSession(
+        email: String,
+        password: String,
+        callback: ApolloCall.Callback<CreateNewUserSessionMutation.Data>
+    ) {
+        Log.d(TAG, "createUserSession")
+        apollo.mutate(
+            CreateNewUserSessionMutation.builder().email(email).password(password).build()
+        ).enqueue( callback )
+    }
+
+    fun getUserListFor(
+        userId: String,
+        callback : ApolloCall.Callback<UserListQuery.Data>
+    ) {
+        Log.d(TAG, "getUserListFor")
+        apollo.query(
+            UserListQuery.builder().userId(userId).build()
+        ).enqueue ( callback )
+    }
+
     //only a test method, not used
-    fun fetchAllUsers() {
-        Log.d(TAG, "fecthAllUsers")
+    fun getAllUsers() {
+        Log.d(TAG, "getAllUsers")
         apollo.query(
             QueryAllUsersQuery.builder().build()
         ).enqueue( object : ApolloCall.Callback<QueryAllUsersQuery.Data>() {

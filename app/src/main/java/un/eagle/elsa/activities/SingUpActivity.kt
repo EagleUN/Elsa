@@ -15,10 +15,7 @@ import un.eagle.elsa.CreateUserMutation
 import un.eagle.elsa.R
 import un.eagle.elsa.graphql.Client
 import android.widget.Toast
-
-
-
-
+import un.eagle.elsa.ElsaPreferences
 
 
 class SingUpActivity : AppCompatActivity() {
@@ -39,6 +36,7 @@ class SingUpActivity : AppCompatActivity() {
 
         val signUpButton = findViewById<Button>(R.id.signUp_button)
         val goToSignIn = findViewById<Button>(R.id.goToSignIn_button)
+        val context = this
 
         val callback = object : ApolloCall.Callback<CreateUserMutation.Data>() {
             override fun onFailure(e: ApolloException) {
@@ -47,11 +45,12 @@ class SingUpActivity : AppCompatActivity() {
 
             override fun onResponse(response: Response<CreateUserMutation.Data>) {
                 Log.d(TAG, "Created user successfully" )
-                val preferences = getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE)
 
                 val userId = response.data()?.createUser()?.id()
                 Log.d(TAG, "ID of created user is: $userId")
-                preferences.edit().putString(Constants.Preferences.USER_ID, userId).commit()
+                if ( userId == null ) return
+
+                ElsaPreferences.setUserId(context, userId)
 
                 runOnUiThread {
                     Toast.makeText(
