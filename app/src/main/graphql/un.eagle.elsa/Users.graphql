@@ -71,3 +71,21 @@ query queryFollowing($userId: String!) {
     }
 }
 
+query queryHomeFeedForUser($id: String!) {
+    homeFeedForUser(id: $id) {
+        id
+        idCreator
+        createdAt
+        content
+    }
+}
+
+query queryProfileFeedForUser($id: String!) {
+    profileFeedForUser(id: $id) {
+        id
+        idCreator
+        createdAt
+        content
+    }
+}
+

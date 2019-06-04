@@ -78,6 +78,27 @@ object Client
         ).enqueue ( callback )
     }
 
+    fun getHomeFeedFor(
+        userId: String,
+        callback: ApolloCall.Callback<QueryHomeFeedForUser.Data>
+    ) {
+        Log.d(TAG, "getHomeFeedFor($userId)")
+        apollo.query(
+            QueryHomeFeedForUser.builder().id(userId).build()
+        ).enqueue ( callback )
+    }
+
+    fun getProfileFeedFor(
+        userId: String,
+        callback: ApolloCall.Callback<QueryHomeFeedForUser.Data>
+    ) {
+        Log.d(TAG, "getHomeFeedFor($userId)")
+        apollo.query(
+            QueryHomeFeedForUser.builder().id(userId).build()
+        ).enqueue ( callback )
+    }
+
+
     fun getFollowingFor(
         userId: String,
         callback : ApolloCall.Callback<QueryFollowing.Data>

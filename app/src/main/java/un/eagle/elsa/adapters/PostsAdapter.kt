@@ -38,14 +38,14 @@ class PostsAdapter(private val posts: ArrayList<Post>) : RecyclerView.Adapter<Re
         {
             viewHolder as ShareViewHolder
             val res = viewHolder.authorTextView.resources
-            viewHolder.authorTextView.text = post.author
+            viewHolder.authorTextView.text = post.authorName
             viewHolder.contentTextView.text = post.content
             viewHolder.sharedByTextView.text = String.format(res.getString(R.string.user_shares), post.sharedBy)
         }
         else
         {
             viewHolder as PostViewHolder
-            viewHolder.authorTextView.text = post.author
+            viewHolder.authorTextView.text = post.authorName
             viewHolder.contentTextView.text = post.content
         }
     }

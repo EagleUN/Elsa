@@ -18,7 +18,6 @@ import un.eagle.elsa.QueryFollowing
 import un.eagle.elsa.R
 import un.eagle.elsa.activities.FollowersActivity
 import un.eagle.elsa.activities.FollowingActivity
-import un.eagle.elsa.adapters.SimpleUsersAdapter
 import un.eagle.elsa.graphql.Client
 
 class ProfileFragment : Fragment() {
@@ -62,8 +61,8 @@ class ProfileFragment : Fragment() {
 
         logOutButton.setOnClickListener { logOut() }
         updateDataButton.setOnClickListener { goToUpdateDataActivity() }
-        followersTV.setOnClickListener { goToFollowersActivity() }
-        followingTV.setOnClickListener { goToFollowingActivity() }
+        followersTV.setOnClickListener { goToFollowersActivity() } //TODO
+        followingTV.setOnClickListener { goToFollowingActivity() } //TODO
 
         val activity = activity!!
         val userId = ElsaPreferences.getUserId(activity)
