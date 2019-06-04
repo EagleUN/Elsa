@@ -43,18 +43,16 @@ query userListQuery ($userId: String!) {
     }
 }
 
+
 mutation createNewUserSessionMutation(
     $email: String!,
     $password: String!
-){
-    createNewUserSession(userSession: { email: $email, password: $password} ) {
+) {
+    createNewUserSession(user: { email: $email, password: $password} ) {
         id
-        name
-        last_name
-        email
+        session
     }
 }
-
 
 query queryFollowers($userId: String!) {
     followers(userId: $userId) {

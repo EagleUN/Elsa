@@ -62,6 +62,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private lateinit var loginViewModel: LoginViewModel
+    private var loading : ProgressBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +70,10 @@ class SignInActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_login)
 
+        loading = findViewById(R.id.loading)
         val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login_button)
-        val loading = findViewById<ProgressBar>(R.id.loading)
         var goToSignUp = findViewById<Button>(R.id.goToSignUp_button)
         loginViewModel = LoginViewModel("","",login)
         username.afterTextChanged {
@@ -102,7 +103,7 @@ class SignInActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
-                loading.visibility = View.VISIBLE
+                loading?.visibility = View.VISIBLE
                 login(username.text.toString(), password.text.toString())
             }
         }
@@ -121,15 +122,14 @@ class SignInActivity : AppCompatActivity() {
 
             override fun onResponse(response: Response<CreateNewUserSessionMutation.Data>) {
                 val r = response.data()?.createNewUserSession()
-                val userName = r?.name()
                 val userId = r?.id()
-                if ( r == null || userName == null || userId == null ) {
+                if ( r == null || userId == null ) {
                     showLoginFailed(R.string.login_failed)
                 }
                 else {
 
                     ElsaPreferences.setUserId(context, userId)
-                    showLogginSuccessful(userName)
+                    showLogginSuccessful()
                     goToMainActivity()
                 }
 
@@ -153,20 +153,22 @@ class SignInActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun showLogginSuccessful(name: String) {
+    private fun showLogginSuccessful() {
         val activity = this
         this.runOnUiThread {
             val welcome = getString(R.string.welcome)
-            Toast.makeText(activity, "$welcome $name", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "$welcome", Toast.LENGTH_SHORT).show()
         }
 
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
+        Log.d(TAG, "Login failed")
         val activity = this
         this.runOnUiThread {
-            Toast.makeText(activity, errorString, Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, activity.resources.getString(errorString), Toast.LENGTH_LONG).show()
         }
+        loading?.visibility = View.INVISIBLE
     }
 
     /**

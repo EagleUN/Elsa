@@ -28,6 +28,8 @@ class OtherUserListFragment : Fragment()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        activity?.title = getString(R.string.title_userList)
+
         val v : View =  inflater.inflate(R.layout.fragment_other_user_list,null)
 
         val postsView = v.findViewById(R.id.otherUserListRecyclerView) as RecyclerView

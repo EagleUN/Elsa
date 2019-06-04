@@ -15,6 +15,7 @@ import com.apollographql.apollo.exception.ApolloException
 import un.eagle.elsa.*
 import un.eagle.elsa.activities.FollowersActivity
 import un.eagle.elsa.activities.FollowingActivity
+import un.eagle.elsa.activities.SignInActivity
 import un.eagle.elsa.graphql.Client
 
 class ProfileFragment : Fragment() {
@@ -44,7 +45,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun logOut() {
-        //TODO
+
+        activity?.let {
+            ElsaPreferences.deleteUserId(it)
+            val intent = Intent(it, SignInActivity::class.java)
+            it.startActivity(intent)
+        }
     }
 
     private fun loadFragment(fragment: Fragment) : Boolean {

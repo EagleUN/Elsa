@@ -10,6 +10,10 @@ object ElsaPreferences {
 
     fun getUserId(context: Context) : String {
         val preferences = context.getSharedPreferences(Constants.APP_PACKAGE, Context.MODE_PRIVATE)
-        return preferences.getString(Constants.Preferences.USER_ID, "")
+        return preferences.getString(Constants.Preferences.USER_ID, "")!!
+    }
+
+    fun deleteUserId(context: Context) {
+        setUserId(context, "")
     }
 }
