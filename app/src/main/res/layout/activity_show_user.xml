@@ -17,7 +17,7 @@
                 android:layout_marginEnd="6dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
         <TextView
-                android:id="@+id/profile_name_textView"
+                android:id="@+id/showUser_name_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/test_user_name"
@@ -35,30 +35,13 @@
                 android:layout_marginEnd="6dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
         <TextView
-                android:id="@+id/profile_lastName_textView"
+                android:id="@+id/showUser_lastName_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/test_user_lastName"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
     </LinearLayout>
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/profile_email"
-                android:layout_marginRight="6dp"
-                android:layout_marginEnd="6dp"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
-        <TextView
-                android:id="@+id/profile_email_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/test_user_email"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
-    </LinearLayout>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +54,7 @@
                 android:layout_marginEnd="6dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
         <TextView
-                android:id="@+id/profile_followers_textView"
+                android:id="@+id/showUser_followers_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/test_user_followers"
@@ -90,7 +73,7 @@
                 android:layout_marginEnd="6dp"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
         <TextView
-                android:id="@+id/profile_following_textView"
+                android:id="@+id/showUser_following_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/test_user_following"
@@ -98,20 +81,21 @@
                 android:textColor="@color/linkColor"/>
     </LinearLayout>
 
-    <Button
-            android:id="@+id/profile_updateData_button"
-            android:layout_width="wrap_content"
+    <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile_update_data"/>
+            android:id="@+id/showUser_followsMe"
+            android:text="@string/follows_me"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 
     <Button
-            android:id="@+id/profile_logOut_button"
+            android:id="@+id/showUser_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_logOut"/>
+            android:text="@string/action_follow"/>
 
     <FrameLayout
-            android:id="@+id/profileFragment_fragmentContainer"
+            android:id="@+id/showUser_fragmentContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="56dp">

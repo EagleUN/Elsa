@@ -1476,7 +1476,7 @@
             "description": "",
             "args": [
               {
-                "name": "userSession",
+                "name": "user",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",

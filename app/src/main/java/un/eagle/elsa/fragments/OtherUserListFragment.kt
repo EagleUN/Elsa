@@ -58,7 +58,7 @@ class OtherUserListFragment : Fragment()
                     )
                 }
                 activity.runOnUiThread {
-                    postsView.adapter = OtherUserListAdapter(data)
+                    postsView.adapter = OtherUserListAdapter(activity, data)
                 }
 
 

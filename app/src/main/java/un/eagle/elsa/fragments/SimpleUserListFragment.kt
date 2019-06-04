@@ -61,7 +61,7 @@ class SimpleUserListFragment : Fragment() {
 
                 }
             }
-            Client.getFollowersFor(userId, callback)
+            Client.queryFollowersFor(userId, callback)
         }
         else if ( type == FOLLOWING )
         {
@@ -81,7 +81,7 @@ class SimpleUserListFragment : Fragment() {
 
                 }
             }
-            Client.getFollowingFor(userId, callback)
+            Client.queryFollowingFor(userId, callback)
         }
 
 

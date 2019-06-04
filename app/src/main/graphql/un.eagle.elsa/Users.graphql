@@ -95,3 +95,25 @@ mutation createPostMutation($userId: String!, $content: String!) {
         idCreator
     }
 }
+
+mutation deleteFollowMutation($followerId: String!, $followingId: String!) {
+    deleteFollow(followerId: $followerId, followingId: $followingId) {
+        followerId
+        followingId
+    }
+}
+
+mutation createFollowMutation($followerId: String!, $followingId: String!) {
+    createFollow(followerId: $followerId, followingId: $followingId) {
+        followerId
+        followingId
+    }
+}
+
+query queryUserById($idUser: String!){
+    userById(id: { id: $idUser } ) {
+        name
+        last_name
+        email
+    }
+}

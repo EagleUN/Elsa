@@ -6,4 +6,7 @@ data class OtherUser(
     val lastName : String,
     val iFollow : Boolean,
     val followsMe : Boolean
-)
+) {
+
+
+}

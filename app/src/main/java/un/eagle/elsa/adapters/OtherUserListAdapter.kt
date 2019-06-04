@@ -1,16 +1,19 @@
 package un.eagle.elsa.adapters
 
+import android.content.Context
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import un.eagle.elsa.R
 import un.eagle.elsa.data.model.OtherUser
+import android.content.Intent
+import un.eagle.elsa.activities.ShowUserActivity
 
-class OtherUserListAdapter(private val otherUsers : List<OtherUser>)
+
+class OtherUserListAdapter(private val mContext : Context, private val otherUsers : ArrayList<OtherUser>)
     : RecyclerView.Adapter<OtherUserListAdapter.OtherUserViewHolder>()
 {
     companion object {
@@ -21,14 +24,60 @@ class OtherUserListAdapter(private val otherUsers : List<OtherUser>)
 
     override fun onBindViewHolder(viewHolder: OtherUserViewHolder, index: Int) {
         val u = otherUsers[index]
-        viewHolder.nameTextView.text = u.name
+        val res = viewHolder.iFollowTextView.resources
 
+        viewHolder.nameTextView.text = u.name + " " + u.lastName
         val followsMeStrId = if ( u.followsMe ) R.string.follows_me else R.string.does_not_follow_me
-        viewHolder.followsMeTextView.text = viewHolder.followsMeTextView.resources.getString(followsMeStrId)
+        viewHolder.followsMeTextView.text = res.getString(followsMeStrId)
 
-        viewHolder.followButton.isActivated = !u.iFollow
+        if ( u.iFollow ) {
+            viewHolder.iFollowTextView.text = res.getString(R.string.i_am_following)
+        }
+        else {
+            viewHolder.iFollowTextView.text = res.getString(R.string.i_am_not_following)
+        }
 
-        viewHolder.followButton.setOnClickListener { followUser(u.id) }
+        viewHolder.parentLayout.setOnClickListener {
+            val intent = Intent(mContext, ShowUserActivity::class.java)
+            intent.putExtra(ShowUserActivity.USER_ID, u.id)
+            intent.putExtra(ShowUserActivity.USER_NAME, u.name)
+            intent.putExtra(ShowUserActivity.USER_LAST_NAME, u.lastName)
+            intent.putExtra(ShowUserActivity.USER_I_FOLLOW, u.iFollow)
+            intent.putExtra(ShowUserActivity.USER_FOLLOWS_ME, u.followsMe)
+            mContext.startActivity(intent)
+
+        }
+
+        /*viewHolder.iFollowTextView.setOnClickListener {
+            if ( u.iFollow )
+            {
+                val callback = object : ApolloCall.Callback<DeleteFollowMutation.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d(TAG, "Could not delete follow $loggedUserId -> ${u.id}")
+                    }
+
+                    override fun onResponse(response: Response<DeleteFollowMutation.Data>) {
+                        otherUsers[index] = u.negateIFollow()
+                        notifyItemRangeChanged(index, 1)
+                    }
+                }
+                Client.deleteFollow(loggedUserId, u.id, callback)
+            }
+            else
+            {
+                val callback = object : ApolloCall.Callback<CreateFollowMutation.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d(TAG, "Could not create follow $loggedUserId -> ${u.id}")
+                    }
+
+                    override fun onResponse(response: Response<CreateFollowMutation.Data>) {
+                        otherUsers[index] = u.negateIFollow()
+                        notifyItemRangeChanged(index, 1)
+                    }
+                }
+                Client.createFollow(loggedUserId, u.id, callback)
+            }
+        }*/
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, itemType: Int): OtherUserViewHolder {
@@ -38,12 +87,12 @@ class OtherUserListAdapter(private val otherUsers : List<OtherUser>)
 
 
     private fun followUser(userId: String) {
-        Log.d(TAG, "Follow user $userId")
     }
 
-    class OtherUserViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+    class OtherUserViewHolder(private val v: View) : RecyclerView.ViewHolder(v) {
+        val parentLayout = v.findViewById(R.id.item_otherUser_parentLayout) as CardView
         val nameTextView = v.findViewById(R.id.item_otherUser_name) as TextView
         val followsMeTextView = v.findViewById(R.id.item_otherUser_followsMe) as TextView
-        val followButton = v.findViewById(R.id.item_otherUser_followButton) as Button
+        val iFollowTextView = v.findViewById(R.id.item_otherUser_iFollow) as TextView
     }
 }

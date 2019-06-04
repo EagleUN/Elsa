@@ -5,6 +5,7 @@
               android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
+            android:id="@+id/item_otherUser_parentLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
@@ -33,18 +34,13 @@
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     android:text="@string/does_not_follow_me"/>
 
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                <Button
-                        android:id="@+id/item_otherUser_followButton"
-                        android:text="@string/action_follow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-            </LinearLayout>
+            <TextView
+                    android:id="@+id/item_otherUser_iFollow"
+                    android:text="@string/i_am_not_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

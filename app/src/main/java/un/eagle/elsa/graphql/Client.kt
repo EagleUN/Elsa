@@ -57,6 +57,16 @@ object Client
         ).enqueue(callback)
     }
 
+    fun queryUserById(
+        userId: String,
+        callback: ApolloCall.Callback<QueryUserById.Data> ) {
+        Log.d(TAG, "queryUserById($userId)")
+        apollo.query(
+            QueryUserById.builder().idUser(userId).build()
+        ).enqueue(callback)
+    }
+
+
     fun createUserSession(
         email: String,
         password: String,
@@ -99,21 +109,21 @@ object Client
     }
 
 
-    fun getFollowingFor(
+    fun queryFollowingFor(
         userId: String,
         callback : ApolloCall.Callback<QueryFollowing.Data>
     ) {
-        Log.d(TAG, "getFollowersFor($userId)")
+        Log.d(TAG, "queryFollowersFor($userId)")
         apollo.query(
             QueryFollowing.builder().userId(userId).build()
         ).enqueue(callback)
     }
 
-    fun getFollowersFor(
+    fun queryFollowersFor(
         userId: String,
         callback : ApolloCall.Callback<QueryFollowers.Data>
     )  {
-        Log.d(TAG, "getFollowersFor($userId)")
+        Log.d(TAG, "queryFollowersFor($userId)")
         apollo.query(
             QueryFollowers.builder().userId(userId).build()
         ).enqueue(callback)
@@ -127,6 +137,28 @@ object Client
         Log.d(TAG, "createPost($userId,$content)")
         apollo.mutate(
             CreatePostMutation.builder().userId(userId).content(content).build()
+        ).enqueue(callback)
+    }
+
+    fun createFollow(
+        followerId: String,
+        followingId: String,
+        callback: ApolloCall.Callback<CreateFollowMutation.Data>
+    ) {
+        Log.d(TAG, "createFollow($followerId,$followingId)")
+        apollo.mutate(
+            CreateFollowMutation.builder().followerId(followerId).followingId(followingId).build()
+        ).enqueue(callback)
+    }
+
+    fun deleteFollow(
+        followerId: String,
+        followingId: String,
+        callback: ApolloCall.Callback<DeleteFollowMutation.Data>
+    ) {
+        Log.d(TAG, "createFollow($followerId,$followingId)")
+        apollo.mutate(
+            DeleteFollowMutation.builder().followerId(followerId).followingId(followingId).build()
         ).enqueue(callback)
     }
 
