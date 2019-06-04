@@ -82,4 +82,10 @@
     <string name="action_follow">Follow</string>
     <string name="action_unfollow">Unfollow</string>
 
+    <!-- PostsFragment -->
+    <string name="action_share">Share</string>
+    <string name="action_share_fail">Failed to share post</string>
+    <string name="action_share_duplicate">Post has already been shared</string>
+    <string name="action_share_successful">Shared post successfully</string>
+
 </resources>

@@ -121,3 +121,11 @@ query queryFollows ($followerId: String!, $followingId: String!) {
         follows
     }
 }
+
+mutation createShare($userId: String!, $postId: String!) {
+    createShare(share: {userId: $userId, postId: $postId} ) {
+        userId
+        postId
+        sharedAt
+    }
+}

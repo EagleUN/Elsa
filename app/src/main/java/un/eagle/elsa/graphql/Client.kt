@@ -173,6 +173,17 @@ object Client
         ).enqueue(callback)
     }
 
+    fun createShare(
+        userId: String,
+        postId: String,
+        callback: ApolloCall.Callback<CreateShare.Data>
+    ) {
+        Log.d(TAG, "createSahre(user=$userId, post=$postId)")
+        apollo.mutate(
+            CreateShare.builder().userId(userId).postId(postId).build()
+        ).enqueue(callback)
+    }
+
     //only a test method, not used
     fun getAllUsers() {
         Log.d(TAG, "getAllUsers")

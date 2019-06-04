@@ -82,7 +82,7 @@ class PostsFragment : Fragment() {
                     }
 
                     activity.runOnUiThread {
-                        val postsAdapter = PostsAdapter(data)
+                        val postsAdapter = PostsAdapter(data, userId, PostsAdapter.HOME, activity!!)
                         postsView.adapter = postsAdapter
 
                     }
@@ -119,9 +119,8 @@ class PostsFragment : Fragment() {
                     }
 
                     activity.runOnUiThread {
-                        val postsAdapter = PostsAdapter(data)
+                        val postsAdapter = PostsAdapter(data, userId, PostsAdapter.PROFILE, activity)
                         postsView.adapter = postsAdapter
-
                     }
                 }
             }
