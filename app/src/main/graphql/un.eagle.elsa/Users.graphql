@@ -117,3 +117,9 @@ query queryUserById($idUser: String!){
         email
     }
 }
+
+query queryFollows ($followerId: String!, $followingId: String!) {
+    follows(followerId: $followerId, followingId: $followingId) {
+        follows
+    }
+}

@@ -61,11 +61,12 @@ class ShowUserActivity : AppCompatActivity() {
         val followsMe = intent.getBooleanExtra(USER_FOLLOWS_ME, false)
         title = otherUserName
 
-        followButton = findViewById<Button>(R.id.showUser_follow)
+        followButton = findViewById(R.id.showUser_follow)
+        followersTV = findViewById(R.id.showUser_followers_textView)
+        followingTV = findViewById(R.id.showUser_following_textView)
+
         val nameTV           : TextView = findViewById(R.id.showUser_name_textView)
         val lastNameTV       : TextView = findViewById(R.id.showUser_lastName_textView)
-        followersTV = findViewById<TextView>(R.id.showUser_followers_textView)
-        followingTV = findViewById<TextView>(R.id.showUser_following_textView)
         val followsMeTV      : TextView = findViewById(R.id.showUser_followsMe)
 
         followersTV?.text = ""
@@ -78,6 +79,7 @@ class ShowUserActivity : AppCompatActivity() {
             else R.string.does_not_follow_me )
 
 
+        setIFollow(iFollow) // to update button's text
 
         val activity = this
 
@@ -117,8 +119,8 @@ class ShowUserActivity : AppCompatActivity() {
             }
 
             override fun onResponse(response: Response<CreateFollowMutation.Data>) {
-                Log.d(TAG, "Deleted follow successfully :D")
-                activity.runOnUiThread{ setIFollow(false) }
+                Log.d(TAG, "Created follow successfully :D")
+                activity.runOnUiThread{ setIFollow(true) }
             }
         }
 
@@ -128,16 +130,28 @@ class ShowUserActivity : AppCompatActivity() {
             }
 
             override fun onResponse(response: Response<DeleteFollowMutation.Data>) {
-                Log.d(TAG, "Created follow successfully :D")
-                activity.runOnUiThread{ setIFollow(true) }
+                Log.d(TAG, "Deleted follow successfully :D")
+                activity.runOnUiThread{ setIFollow(false) }
             }
         }
 
+        val callbackFollow = object : ApolloCall.Callback<QueryFollows.Data>() {
+            override fun onFailure(e: ApolloException) {
+                Log.d(TAG, "Could not query follows :C")
+            }
+
+            override fun onResponse(response: Response<QueryFollows.Data>) {
+                val follows = response.data()?.follows()?.follows()!!
+                activity.runOnUiThread { setIFollow( follows ) }
+            }
+        }
+
+        Client.queryFollow(userId, otherUserId, callbackFollow)
         Client.queryFollowersFor(otherUserId, callbackFollowers)
         Client.queryFollowingFor(otherUserId, callbackFollowing)
         followButton?.setOnClickListener{
-            if ( iFollow ) Client.createFollow(userId, otherUserId, callbackCreateFollow)
-            else Client.deleteFollow(userId, otherUserId, callbackDeleteFollow)
+            if ( iFollow ) Client.deleteFollow(userId, otherUserId, callbackDeleteFollow)
+            else Client.createFollow(userId, otherUserId, callbackCreateFollow)
         }
     }
 }
