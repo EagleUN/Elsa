@@ -46,6 +46,11 @@ class ProfileFragment : Fragment() {
         //TODO
     }
 
+    private fun loadFragment(fragment: Fragment) : Boolean {
+        activity!!.supportFragmentManager.beginTransaction().replace(R.id.profileFragment_fragmentContainer,fragment).commit()
+        return true
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         activity?.title = getString(R.string.title_profile)
         val v : View = inflater.inflate(R.layout.fragment_profile,null)
@@ -97,6 +102,13 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+
+        val profileFeed = PostsFragment()
+        val args = Bundle()
+        args.putInt(PostsFragment.TYPE, PostsFragment.PROFILE)
+        profileFeed.arguments = args
+        loadFragment(profileFeed)
+
 
         Client.getFollowersFor(userId, callbackFollowers)
         Client.getFollowingFor(userId, callbackFollowing)

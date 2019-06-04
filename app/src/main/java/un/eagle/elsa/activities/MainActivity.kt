@@ -8,11 +8,10 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import un.eagle.elsa.ElsaPreferences
 import un.eagle.elsa.R
-import un.eagle.elsa.fragments.HomeFragment
+import un.eagle.elsa.fragments.PostsFragment
 import un.eagle.elsa.fragments.NotificationsFragment
 import un.eagle.elsa.fragments.ProfileFragment
 import un.eagle.elsa.fragments.OtherUserListFragment
-import un.eagle.elsa.graphql.Client
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                loadFragment(HomeFragment())
+                goToHomeTab()
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_profile -> {
@@ -40,6 +39,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
         false
+    }
+
+    private fun goToHomeTab() {
+        val homeFeed = PostsFragment()
+        val args = Bundle()
+        args.putInt(PostsFragment.TYPE, PostsFragment.HOME)
+        homeFeed.arguments = args
+        loadFragment(homeFeed)
     }
 
     private fun loadFragment(fragment: Fragment) : Boolean {
@@ -64,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             setContentView(R.layout.activity_main)
             val navView: BottomNavigationView = findViewById(R.id.nav_view)
             navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-            loadFragment(HomeFragment())
+            goToHomeTab()
         };
         else
         {

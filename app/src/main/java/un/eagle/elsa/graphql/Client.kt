@@ -90,11 +90,11 @@ object Client
 
     fun getProfileFeedFor(
         userId: String,
-        callback: ApolloCall.Callback<QueryHomeFeedForUser.Data>
+        callback: ApolloCall.Callback<QueryProfileFeedForUser.Data>
     ) {
         Log.d(TAG, "getHomeFeedFor($userId)")
         apollo.query(
-            QueryHomeFeedForUser.builder().id(userId).build()
+            QueryProfileFeedForUser.builder().id(userId).build()
         ).enqueue ( callback )
     }
 

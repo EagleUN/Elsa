@@ -19,7 +19,7 @@
     <string name="title_userList">User list</string>
     <string name="title_notifications">Notifications</string>
 
-    <!-- HomeFragment -->
+    <!-- PostsFragment -->
     <string name="user_shares">%1$s shared:</string>
 
     <!-- WritePostActivity -->
