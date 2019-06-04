@@ -45,8 +45,9 @@ class SingUpActivity : AppCompatActivity() {
 
             override fun onResponse(response: Response<CreateUserMutation.Data>) {
                 Log.d(TAG, "Created user successfully" )
-
                 val userId = response.data()?.createUser()?.id()
+                Log.d(TAG, "data = ${response.data()}")
+                Log.d(TAG, "createUser=  ${response.data()?.createUser()}")
                 Log.d(TAG, "ID of created user is: $userId")
                 if ( userId == null ) return
 
