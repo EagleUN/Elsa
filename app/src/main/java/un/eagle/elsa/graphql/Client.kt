@@ -78,6 +78,26 @@ object Client
         ).enqueue ( callback )
     }
 
+    fun getFollowingFor(
+        userId: String,
+        callback : ApolloCall.Callback<QueryFollowing.Data>
+    ) {
+        Log.d(TAG, "getFollowersFor($userId)")
+        apollo.query(
+            QueryFollowing.builder().userId(userId).build()
+        ).enqueue(callback)
+    }
+
+    fun getFollowersFor(
+        userId: String,
+        callback : ApolloCall.Callback<QueryFollowers.Data>
+    )  {
+        Log.d(TAG, "getFollowersFor($userId)")
+        apollo.query(
+            QueryFollowers.builder().userId(userId).build()
+        ).enqueue(callback)
+    }
+
     //only a test method, not used
     fun getAllUsers() {
         Log.d(TAG, "getAllUsers")

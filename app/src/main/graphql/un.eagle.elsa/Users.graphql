@@ -54,3 +54,20 @@ mutation createNewUserSessionMutation(
         email
     }
 }
+
+
+query queryFollowers($userId: String!) {
+    followers(userId: $userId) {
+        count
+        userIds
+    }
+}
+
+
+query queryFollowing($userId: String!) {
+    following(userId: $userId) {
+        count
+        userIds
+    }
+}
+
