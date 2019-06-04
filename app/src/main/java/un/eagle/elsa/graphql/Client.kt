@@ -184,6 +184,16 @@ object Client
         ).enqueue(callback)
     }
 
+    fun queryNotificationsFor(
+        userId: String,
+        callback: ApolloCall.Callback<QueryNotificationsForUser.Data>
+    ) {
+        Log.d(TAG, "queryNotificationsForUser($userId)")
+        apollo.query(
+            QueryNotificationsForUser.builder().userId(userId).build()
+        ).enqueue(callback)
+    }
+
     //only a test method, not used
     fun getAllUsers() {
         Log.d(TAG, "getAllUsers")

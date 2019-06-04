@@ -129,3 +129,13 @@ mutation createShare($userId: String!, $postId: String!) {
         sharedAt
     }
 }
+
+query queryNotificationsForUser($userId: String!) {
+    NotificationByUser(user: $userId){
+        notificated_user
+        follower
+        date
+        type
+        post_id
+    }
+}
