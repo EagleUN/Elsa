@@ -12,7 +12,7 @@ import android.widget.Toast
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import un.eagle.elsa.CreateShare
+import un.eagle.elsa.CreateShareMutation
 import un.eagle.elsa.R
 import un.eagle.elsa.data.model.Post
 import un.eagle.elsa.graphql.Client
@@ -73,7 +73,7 @@ class PostsAdapter(
             else
             {
                 viewHolder.shareButton.visibility = View.VISIBLE
-                val callback = object : ApolloCall.Callback<CreateShare.Data>() {
+                val callback = object : ApolloCall.Callback<CreateShareMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
                         Log.d(TAG, "Failed to share post")
                         activity.runOnUiThread {
@@ -85,7 +85,7 @@ class PostsAdapter(
                         }
                     }
 
-                    override fun onResponse(response: Response<CreateShare.Data>) {
+                    override fun onResponse(response: Response<CreateShareMutation.Data>) {
                         Log.d(TAG, "Successfully shared post")
                         activity.runOnUiThread {
                             Toast.makeText(

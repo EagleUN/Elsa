@@ -10,11 +10,10 @@ import android.widget.EditText
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import un.eagle.elsa.Constants
-import un.eagle.elsa.CreateUserMutation
 import un.eagle.elsa.R
 import un.eagle.elsa.graphql.Client
 import android.widget.Toast
+import un.eagle.elsa.CreateUserMutation
 import un.eagle.elsa.ElsaPreferences
 
 

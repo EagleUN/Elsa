@@ -85,12 +85,12 @@ class ProfileFragment : Fragment() {
         val userId = ElsaPreferences.getUserId(activity)
 
 
-        val callbackFollowers = object : ApolloCall.Callback<QueryFollowers.Data>() {
+        val callbackFollowers = object : ApolloCall.Callback<FollowersQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(TAG, "Could not load following of ${userId}")
             }
 
-            override fun onResponse(response: Response<QueryFollowers.Data>) {
+            override fun onResponse(response: Response<FollowersQuery.Data>) {
                 Log.d(TAG, "Successfully loaded following of ${userId}")
                 val count = response.data()?.followers()?.count()!!
                 activity.runOnUiThread{
@@ -101,12 +101,12 @@ class ProfileFragment : Fragment() {
         }
 
 
-        val callbackFollowing = object : ApolloCall.Callback<QueryFollowing.Data>() {
+        val callbackFollowing = object : ApolloCall.Callback<FollowingQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(TAG, "Could not load followers of ${userId}")
             }
 
-            override fun onResponse(response: Response<QueryFollowing.Data>) {
+            override fun onResponse(response: Response<FollowingQuery.Data>) {
                 Log.d(TAG, "Successfully loaded followers of ${userId}")
                 val count = response.data()?.following()?.count()!!
                 activity.runOnUiThread{
@@ -115,12 +115,12 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        val callbackUser = object : ApolloCall.Callback<QueryUserById.Data>() {
+        /*val callbackUser = object : ApolloCall.Callback<UserByIdQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(TAG, "Failed to query user by id", e)
             }
 
-            override fun onResponse(response: Response<QueryUserById.Data>) {
+            override fun onResponse(response: Response<UserByIdQuery.Data>) {
                 val user = response.data()?.userById()!!
                 activity.runOnUiThread{
                     emailTV.text = user.email()
@@ -129,7 +129,7 @@ class ProfileFragment : Fragment() {
                 }
 
             }
-        }
+        }TODO*/
 
         val profileFeed = PostsFragment()
         val args = Bundle()
@@ -140,7 +140,7 @@ class ProfileFragment : Fragment() {
 
         Client.queryFollowersFor(userId, callbackFollowers)
         Client.queryFollowingFor(userId, callbackFollowing)
-        Client.queryUserById(userId, callbackUser)
+        //Client.queryUserById(userId, callbackUser) //TODO
 
         return v
     }

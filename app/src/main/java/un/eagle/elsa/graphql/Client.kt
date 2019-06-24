@@ -1,11 +1,11 @@
 package un.eagle.elsa.graphql
 
 import com.apollographql.apollo.ApolloClient
-import okhttp3.OkHttpClient
 import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import okhttp3.OkHttpClient
 import org.jetbrains.annotations.NotNull
 import un.eagle.elsa.*
 
@@ -59,10 +59,10 @@ object Client
 
     fun queryUserById(
         userId: String,
-        callback: ApolloCall.Callback<QueryUserById.Data> ) {
+        callback: ApolloCall.Callback<UserByIdQuery.Data> ) {
         Log.d(TAG, "queryUserById($userId)")
         apollo.query(
-            QueryUserById.builder().idUser(userId).build()
+            UserByIdQuery.builder().idUser(userId).build()
         ).enqueue(callback)
     }
 
@@ -90,42 +90,42 @@ object Client
 
     fun getHomeFeedFor(
         userId: String,
-        callback: ApolloCall.Callback<QueryHomeFeedForUser.Data>
+        callback: ApolloCall.Callback<HomeFeedForUserQuery.Data>
     ) {
         Log.d(TAG, "getHomeFeedFor($userId)")
         apollo.query(
-            QueryHomeFeedForUser.builder().id(userId).build()
+            HomeFeedForUserQuery.builder().id(userId).build()
         ).enqueue ( callback )
     }
 
     fun getProfileFeedFor(
         userId: String,
-        callback: ApolloCall.Callback<QueryProfileFeedForUser.Data>
+        callback: ApolloCall.Callback<ProfileFeedForUserQuery.Data>
     ) {
         Log.d(TAG, "getHomeFeedFor($userId)")
         apollo.query(
-            QueryProfileFeedForUser.builder().id(userId).build()
+            ProfileFeedForUserQuery.builder().id(userId).build()
         ).enqueue ( callback )
     }
 
 
     fun queryFollowingFor(
         userId: String,
-        callback : ApolloCall.Callback<QueryFollowing.Data>
+        callback : ApolloCall.Callback<FollowingQuery.Data>
     ) {
         Log.d(TAG, "queryFollowersFor($userId)")
         apollo.query(
-            QueryFollowing.builder().userId(userId).build()
+            FollowingQuery.builder().userId(userId).build()
         ).enqueue(callback)
     }
 
     fun queryFollowersFor(
         userId: String,
-        callback : ApolloCall.Callback<QueryFollowers.Data>
+        callback : ApolloCall.Callback<FollowersQuery.Data>
     )  {
         Log.d(TAG, "queryFollowersFor($userId)")
         apollo.query(
-            QueryFollowers.builder().userId(userId).build()
+            FollowersQuery.builder().userId(userId).build()
         ).enqueue(callback)
     }
 
@@ -165,32 +165,32 @@ object Client
     fun queryFollow(
         followerId: String,
         followingId: String,
-        callback: ApolloCall.Callback<QueryFollows.Data>
+        callback: ApolloCall.Callback<FollowsQuery.Data>
     ) {
         Log.d(TAG, "queryFollows($followerId, $followingId)")
         apollo.query(
-            QueryFollows.builder().followerId(followerId).followingId(followingId).build()
+            FollowsQuery.builder().followerId(followerId).followingId(followingId).build()
         ).enqueue(callback)
     }
 
     fun createShare(
         userId: String,
         postId: String,
-        callback: ApolloCall.Callback<CreateShare.Data>
+        callback: ApolloCall.Callback<CreateShareMutation.Data>
     ) {
         Log.d(TAG, "createSahre(user=$userId, post=$postId)")
         apollo.mutate(
-            CreateShare.builder().userId(userId).postId(postId).build()
+            CreateShareMutation.builder().userId(userId).postId(postId).build()
         ).enqueue(callback)
     }
 
     fun queryNotificationsFor(
         userId: String,
-        callback: ApolloCall.Callback<QueryNotificationsForUser.Data>
+        callback: ApolloCall.Callback<NotificationsForUserQuery.Data>
     ) {
         Log.d(TAG, "queryNotificationsForUser($userId)")
         apollo.query(
-            QueryNotificationsForUser.builder().userId(userId).build()
+            NotificationsForUserQuery.builder().userId(userId).build()
         ).enqueue(callback)
     }
 

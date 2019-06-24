@@ -83,12 +83,12 @@ class ShowUserActivity : AppCompatActivity() {
 
         val activity = this
 
-        val callbackFollowers = object : ApolloCall.Callback<QueryFollowers.Data>() {
+        val callbackFollowers = object : ApolloCall.Callback<FollowersQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(ProfileFragment.TAG, "Could not load following of ${otherUserId}")
             }
 
-            override fun onResponse(response: Response<QueryFollowers.Data>) {
+            override fun onResponse(response: Response<FollowersQuery.Data>) {
                 Log.d(ProfileFragment.TAG, "Successfully loaded following of ${otherUserId}")
                 val count = response.data()?.followers()?.count()!!
                 activity.runOnUiThread{
@@ -99,12 +99,12 @@ class ShowUserActivity : AppCompatActivity() {
         }
 
 
-        val callbackFollowing = object : ApolloCall.Callback<QueryFollowing.Data>() {
+        val callbackFollowing = object : ApolloCall.Callback<FollowingQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(ProfileFragment.TAG, "Could not load followers of ${otherUserId}")
             }
 
-            override fun onResponse(response: Response<QueryFollowing.Data>) {
+            override fun onResponse(response: Response<FollowingQuery.Data>) {
                 Log.d(ProfileFragment.TAG, "Successfully loaded followers of ${otherUserId}")
                 val count = response.data()?.following()?.count()!!
                 activity.runOnUiThread{
@@ -135,12 +135,12 @@ class ShowUserActivity : AppCompatActivity() {
             }
         }
 
-        val callbackFollow = object : ApolloCall.Callback<QueryFollows.Data>() {
+        val callbackFollow = object : ApolloCall.Callback<FollowsQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(TAG, "Could not query follows :C")
             }
 
-            override fun onResponse(response: Response<QueryFollows.Data>) {
+            override fun onResponse(response: Response<FollowsQuery.Data>) {
                 val follows = response.data()?.follows()?.follows()!!
                 activity.runOnUiThread { setIFollow( follows ) }
             }

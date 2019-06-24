@@ -13,8 +13,7 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import un.eagle.elsa.ElsaPreferences
-import un.eagle.elsa.MockData
-import un.eagle.elsa.QueryNotificationsForUser
+import un.eagle.elsa.NotificationsForUserQuery
 import un.eagle.elsa.R
 import un.eagle.elsa.adapters.NotificationsAdapter
 import un.eagle.elsa.data.model.Notification
@@ -37,17 +36,17 @@ class NotificationsFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
         val userId = ElsaPreferences.getUserId(activity)
 
-        val callback = object : ApolloCall.Callback<QueryNotificationsForUser.Data>() {
+        val callback = object : ApolloCall.Callback<NotificationsForUserQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(TAG, "Couldn't fetch notifications for $userId")
             }
 
-            override fun onResponse(response: Response<QueryNotificationsForUser.Data>) {
+            override fun onResponse(response: Response<NotificationsForUserQuery.Data>) {
                 val resList = response.data()?.NotificationByUser()!!
                 val data = ArrayList<Notification>()
                 resList.forEach {
                     val noti = Notification(
-                        sourceUserName = it.follower()!!,
+                        sourceUserName = it.follower(),
                         notificationType = if ( it.type() == "share" ) Notification.SHARE else Notification.FOLLOW
                     )
                     data.add(noti)

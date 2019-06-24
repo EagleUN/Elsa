@@ -12,10 +12,7 @@ import android.widget.LinearLayout
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import un.eagle.elsa.ElsaPreferences
-import un.eagle.elsa.QueryFollowers
-import un.eagle.elsa.QueryFollowing
-import un.eagle.elsa.R
+import un.eagle.elsa.*
 import un.eagle.elsa.adapters.SimpleUsersAdapter
 import un.eagle.elsa.graphql.Client
 
@@ -45,12 +42,12 @@ class SimpleUserListFragment : Fragment() {
 
         if ( type == FOLLOWERS )
         {
-            val callback = object : ApolloCall.Callback<QueryFollowers.Data>() {
+            val callback = object : ApolloCall.Callback<FollowersQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
                     Log.d(TAG, "Could not load following of ${userId}")
                 }
 
-                override fun onResponse(response: Response<QueryFollowers.Data>) {
+                override fun onResponse(response: Response<FollowersQuery.Data>) {
                     Log.d(TAG, "Successfully loaded following of ${userId}")
                     val resData = response.data()?.followers()?.userIds()!!
                     val data = ArrayList<String>()
@@ -65,12 +62,12 @@ class SimpleUserListFragment : Fragment() {
         }
         else if ( type == FOLLOWING )
         {
-            val callback = object : ApolloCall.Callback<QueryFollowing.Data>() {
+            val callback = object : ApolloCall.Callback<FollowingQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
                     Log.d(TAG, "Could not load followers of ${userId}")
                 }
 
-                override fun onResponse(response: Response<QueryFollowing.Data>) {
+                override fun onResponse(response: Response<FollowingQuery.Data>) {
                     Log.d(TAG, "Successfully loaded followers of ${userId}")
                     val resData = response.data()?.following()?.userIds()!!
                     val data = ArrayList<String>()

@@ -1,24 +1,30 @@
-query queryAllUsersQuery {
+query queryAllUsers {
     allUsers {
         total
         list {
             id
             name
             last_name
+            username
             email
+            last_login
         }
     }
 }
 
-mutation createUserMutation (
+
+mutation createUser (
     $name: String!,
     $last_name: String!,
+    $lastnane: String!,
     $email: String!,
     $password: String!,
-    $password_confirmation: String!) {
-    createUser(user: {
+    $password_confirmation: String!
+) {
+    createUser(user:{
         name: $name,
         last_name: $last_name,
+        username: $lastnane,
         email: $email,
         password: $password,
         password_confirmation: $password_confirmation
@@ -26,11 +32,24 @@ mutation createUserMutation (
         id
         name
         last_name
+        username
         email
+        last_login
     }
 }
 
-query userListQuery ($userId: String!) {
+query userById($idUser: String!) {
+    userById(id: {id: $idUser} ){
+        id
+        name
+        last_name
+        username
+        email
+        last_login
+    }
+}
+
+query userList ($userId: String!) {
     userList(userId: $userId) {
         count
         otherUsers {
@@ -44,17 +63,16 @@ query userListQuery ($userId: String!) {
 }
 
 
-mutation createNewUserSessionMutation(
+mutation createNewUserSession(
     $email: String!,
     $password: String!
 ) {
     createNewUserSession(user: { email: $email, password: $password} ) {
-        id
-        session
+        jwt
     }
 }
 
-query queryFollowers($userId: String!) {
+query followers($userId: String!) {
     followers(userId: $userId) {
         count
         userIds
@@ -62,14 +80,14 @@ query queryFollowers($userId: String!) {
 }
 
 
-query queryFollowing($userId: String!) {
+query following($userId: String!) {
     following(userId: $userId) {
         count
         userIds
     }
 }
 
-query queryHomeFeedForUser($id: String!) {
+query homeFeedForUser($id: String!) {
     homeFeedForUser(id: $id) {
         id
         idCreator
@@ -78,7 +96,7 @@ query queryHomeFeedForUser($id: String!) {
     }
 }
 
-query queryProfileFeedForUser($id: String!) {
+query profileFeedForUser($id: String!) {
     profileFeedForUser(id: $id) {
         id
         idCreator
@@ -87,36 +105,27 @@ query queryProfileFeedForUser($id: String!) {
     }
 }
 
-mutation createPostMutation($userId: String!, $content: String!) {
+mutation createPost($userId: String!, $content: String!) {
     createPost(post: {content: $content, idCreator: $userId}) {
         id
         idCreator
     }
 }
 
-mutation deleteFollowMutation($followerId: String!, $followingId: String!) {
+mutation deleteFollow($followerId: String!, $followingId: String!) {
     deleteFollow(followerId: $followerId, followingId: $followingId) {
         followerId
         followingId
     }
 }
 
-mutation createFollowMutation($followerId: String!, $followingId: String!) {
+mutation createFollow($followerId: String!, $followingId: String!) {
     createFollow(followerId: $followerId, followingId: $followingId) {
         followerId
         followingId
     }
 }
-
-query queryUserById($idUser: String!){
-    userById(id: { id: $idUser } ) {
-        name
-        last_name
-        email
-    }
-}
-
-query queryFollows ($followerId: String!, $followingId: String!) {
+query follows ($followerId: String!, $followingId: String!) {
     follows(followerId: $followerId, followingId: $followingId) {
         follows
     }
@@ -130,12 +139,14 @@ mutation createShare($userId: String!, $postId: String!) {
     }
 }
 
-query queryNotificationsForUser($userId: String!) {
-    NotificationByUser(user: $userId){
+query notificationsForUser($userId: String!) {
+    NotificationByUser(user: $userId) {
         notificated_user
         follower
         date
         type
         post_id
+        content
+        follower_name
     }
 }

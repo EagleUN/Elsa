@@ -15,8 +15,8 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import un.eagle.elsa.ElsaPreferences
-import un.eagle.elsa.QueryHomeFeedForUser
-import un.eagle.elsa.QueryProfileFeedForUser
+import un.eagle.elsa.HomeFeedForUserQuery
+import un.eagle.elsa.ProfileFeedForUserQuery
 import un.eagle.elsa.R
 import un.eagle.elsa.activities.WritePostActivity
 import un.eagle.elsa.adapters.PostsAdapter
@@ -59,12 +59,12 @@ class PostsFragment : Fragment() {
 
         if ( type == HOME )
         {
-            val callbackHome = object : ApolloCall.Callback<QueryHomeFeedForUser.Data>() {
+            val callbackHome = object : ApolloCall.Callback<HomeFeedForUserQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
                     Log.d(TAG, "Could not get home feed for user $userId")
                 }
 
-                override fun onResponse(response: Response<QueryHomeFeedForUser.Data>) {
+                override fun onResponse(response: Response<HomeFeedForUserQuery.Data>) {
                     Log.d(TAG, "Successfully got home feed for user $userId")
 
                     val homeFeedResponse = response.data()?.homeFeedForUser()!!
@@ -82,7 +82,7 @@ class PostsFragment : Fragment() {
                     }
 
                     activity.runOnUiThread {
-                        val postsAdapter = PostsAdapter(data, userId, PostsAdapter.HOME, activity!!)
+                        val postsAdapter = PostsAdapter(data, userId, PostsAdapter.HOME, activity)
                         postsView.adapter = postsAdapter
 
                     }
@@ -96,12 +96,12 @@ class PostsFragment : Fragment() {
         }
         else if ( type == PROFILE )
         {
-            val callbackProfile = object : ApolloCall.Callback<QueryProfileFeedForUser.Data>() {
+            val callbackProfile = object : ApolloCall.Callback<ProfileFeedForUserQuery.Data>() {
                 override fun onFailure(e: ApolloException) {
                     Log.d(TAG, "Could not get profile feed for user $userId")
                 }
 
-                override fun onResponse(response: Response<QueryProfileFeedForUser.Data>) {
+                override fun onResponse(response: Response<ProfileFeedForUserQuery.Data>) {
                     Log.d(TAG, "Successfully got profile feed for user $userId")
 
                     val homeFeedResponse = response.data()?.profileFeedForUser()!!

@@ -122,17 +122,16 @@ class SignInActivity : AppCompatActivity() {
 
             override fun onResponse(response: Response<CreateNewUserSessionMutation.Data>) {
                 val r = response.data()?.createNewUserSession()
-                val userId = r?.id()
-                if ( r == null || userId == null ) {
+                val token = r?.jwt()
+                if ( r == null || token == null ) {
                     showLoginFailed(R.string.login_failed)
                 }
                 else {
 
-                    ElsaPreferences.setUserId(context, userId)
+                    ElsaPreferences.setUserId(context, token)
                     showLogginSuccessful()
                     goToMainActivity()
                 }
-
             }
         }
 

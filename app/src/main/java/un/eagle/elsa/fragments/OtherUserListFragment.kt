@@ -33,7 +33,7 @@ class OtherUserListFragment : Fragment()
         val v : View =  inflater.inflate(R.layout.fragment_other_user_list,null)
 
         val postsView = v.findViewById(R.id.otherUserListRecyclerView) as RecyclerView
-        postsView!!.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
+        postsView.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
 
         val activity = activity!!
         val userId = ElsaPreferences.getUserId(activity)

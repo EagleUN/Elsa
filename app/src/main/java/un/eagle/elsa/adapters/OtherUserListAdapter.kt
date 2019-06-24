@@ -85,10 +85,6 @@ class OtherUserListAdapter(private val mContext : Context, private val otherUser
         return OtherUserViewHolder(v)
     }
 
-
-    private fun followUser(userId: String) {
-    }
-
     class OtherUserViewHolder(private val v: View) : RecyclerView.ViewHolder(v) {
         val parentLayout = v.findViewById(R.id.item_otherUser_parentLayout) as CardView
         val nameTextView = v.findViewById(R.id.item_otherUser_name) as TextView
