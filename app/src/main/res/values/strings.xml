@@ -88,4 +88,7 @@
     <string name="action_share_duplicate">Post has already been shared</string>
     <string name="action_share_successful">Shared post successfully</string>
 
+    <!-- Notifications channel -->
+    <string name="channel_name">EagleUN notifications channel</string>
+    <string name="channel_description">Channel used by the EagleUN app to push notifications</string>
 </resources>

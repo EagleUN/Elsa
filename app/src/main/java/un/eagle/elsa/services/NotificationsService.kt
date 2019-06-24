@@ -1,8 +1,15 @@
 package un.eagle.elsa.services
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import un.eagle.elsa.Constants
+import un.eagle.elsa.R
+import un.eagle.elsa.activities.MainActivity
 
 class NotificationsService : FirebaseMessagingService() {
 
@@ -41,6 +48,24 @@ class NotificationsService : FirebaseMessagingService() {
         remoteMessage?.notification?.let {
             Log.d(TAG, "Message Notification Body: ${it.body}")
         }
+
+        // Create an explicit intent for an Activity in your app
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+
+        var builder = NotificationCompat.Builder(this, Constants.CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_notifications_active_black_24dp)
+            .setContentTitle(remoteMessage?.notification?.title)
+            .setContentText(remoteMessage?.notification?.body)
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        with(NotificationManagerCompat.from(this)) {
+            notify(remoteMessage.hashCode(), builder.build())
+            Log.d(MainActivity.TAG, "Notified :D");
+        }
+
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
