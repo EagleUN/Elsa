@@ -2,18 +2,18 @@ package un.eagle.elsa.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import un.eagle.elsa.ElsaPreferences
 import un.eagle.elsa.HomeFeedForUserQuery
 import un.eagle.elsa.ProfileFeedForUserQuery
@@ -50,7 +50,7 @@ class PostsFragment : Fragment() {
         activity?.title = getString(R.string.title_home)
 
         val postsView : RecyclerView = v.findViewById(R.id.postsRecyclerView)
-        postsView.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
+        postsView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         val activity = activity!!
         val userId = ElsaPreferences.getUserId(activity)

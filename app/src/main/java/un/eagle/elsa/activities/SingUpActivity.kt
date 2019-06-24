@@ -2,7 +2,6 @@ package un.eagle.elsa.activities
 
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -13,6 +12,7 @@ import com.apollographql.apollo.exception.ApolloException
 import un.eagle.elsa.R
 import un.eagle.elsa.graphql.Client
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import un.eagle.elsa.CreateUserMutation
 import un.eagle.elsa.ElsaPreferences
 

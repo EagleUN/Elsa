@@ -1,7 +1,7 @@
 package un.eagle.elsa.activities
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import un.eagle.elsa.R
 import un.eagle.elsa.fragments.SimpleUserListFragment
 

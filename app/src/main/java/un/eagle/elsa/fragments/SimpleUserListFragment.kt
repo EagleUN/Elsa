@@ -1,14 +1,14 @@
 package un.eagle.elsa.fragments
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
@@ -33,7 +33,7 @@ class SimpleUserListFragment : Fragment() {
         val v : View  =  inflater.inflate(R.layout.fragment_simple_user_list,null)
 
         val postsView : RecyclerView = v.findViewById(R.id.simpleUserListRecyclerView)
-        postsView.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
+        postsView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
         val type = arguments?.getInt(TYPE)
         val activity = activity!!

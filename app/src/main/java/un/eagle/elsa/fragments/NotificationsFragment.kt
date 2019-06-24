@@ -1,14 +1,14 @@
 package un.eagle.elsa.fragments
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
@@ -33,7 +33,7 @@ class NotificationsFragment : Fragment() {
 
 
         val recyclerView : RecyclerView = v.findViewById(R.id.notificationsRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         val userId = ElsaPreferences.getUserId(activity)
 
         val callback = object : ApolloCall.Callback<NotificationsForUserQuery.Data>() {

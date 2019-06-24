@@ -2,13 +2,13 @@ package un.eagle.elsa.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
@@ -87,11 +87,11 @@ class ProfileFragment : Fragment() {
 
         val callbackFollowers = object : ApolloCall.Callback<FollowersQuery.Data>() {
             override fun onFailure(e: ApolloException) {
-                Log.d(TAG, "Could not load following of ${userId}")
+                Log.d(TAG, "Could not load following of $userId")
             }
 
             override fun onResponse(response: Response<FollowersQuery.Data>) {
-                Log.d(TAG, "Successfully loaded following of ${userId}")
+                Log.d(TAG, "Successfully loaded following of $userId")
                 val count = response.data()?.followers()?.count()!!
                 activity.runOnUiThread{
                     followersTV.text = count.toString()
@@ -103,14 +103,14 @@ class ProfileFragment : Fragment() {
 
         val callbackFollowing = object : ApolloCall.Callback<FollowingQuery.Data>() {
             override fun onFailure(e: ApolloException) {
-                Log.d(TAG, "Could not load followers of ${userId}")
+                Log.d(TAG, "Could not load followers of $userId")
             }
 
             override fun onResponse(response: Response<FollowingQuery.Data>) {
-                Log.d(TAG, "Successfully loaded followers of ${userId}")
-                val count = response.data()?.following()?.count()!!
+                Log.d(TAG, "Successfully loaded followers of $userId")
+                val count = response.data()?.following()?.count()
                 activity.runOnUiThread{
-                    followingTV.text = count.toString()
+                    followingTV.text = count?.toString()
                 }
             }
         }
