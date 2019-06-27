@@ -5,9 +5,12 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import un.eagle.elsa.Constants
+import un.eagle.elsa.ElsaPreferences
 import un.eagle.elsa.R
 import un.eagle.elsa.activities.MainActivity
 
@@ -15,6 +18,26 @@ class NotificationsService : FirebaseMessagingService() {
 
     companion object {
         private const val TAG = "Eagle.NotificationsServ"
+    }
+
+
+    override fun onStart(intent: Intent?, startId: Int) {
+        super.onStart(intent, startId)
+        Log.d(TAG, "onStart of service")
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.d(TAG, "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                val token = task.result?.token
+                // Get new Instance ID token
+                token?.let {
+                    Log.d(TAG, "token is $token")
+                    sendRegistrationToServer(token)
+                }
+            })
     }
 
     /**
@@ -66,7 +89,6 @@ class NotificationsService : FirebaseMessagingService() {
             Log.d(MainActivity.TAG, "Notified :D");
         }
 
-
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
@@ -84,7 +106,7 @@ class NotificationsService : FirebaseMessagingService() {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        sendRegistrationToServer(token)
+        token?.let{ sendRegistrationToServer(token) }
     }
     // [END on_new_token]
 
@@ -103,7 +125,21 @@ class NotificationsService : FirebaseMessagingService() {
      *
      * @param token The new token.
      */
-    private fun sendRegistrationToServer(token: String?) {
-        // TODO: Implement this method to send token to your app server.
+    private fun sendRegistrationToServer(token: String) {
+        token?.let {
+            val userId = ElsaPreferences.getUserId(this)
+            Log.d(TAG, "Send this token to the server $token")
+            /*Client.reset(token)
+            Client.addToken(userId, token, object : ApolloCall.Callback<AddTokenMutation.Data>() {
+                override fun onFailure(e: ApolloException) {
+                    Log.d(TAG, "Couldn't post session token")
+                }
+
+                override fun onResponse(response: Response<AddTokenMutation.Data>) {
+                    Log.d(TAG, "Successfully posted token")
+                }
+            })*/
+            ElsaPreferences.setSessionJwt(this, token)
+        }
     }
 }

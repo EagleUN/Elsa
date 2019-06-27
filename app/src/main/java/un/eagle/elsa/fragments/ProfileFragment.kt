@@ -48,6 +48,7 @@ class ProfileFragment : Fragment() {
 
         activity?.let {
             ElsaPreferences.deleteUserId(it)
+            ElsaPreferences.deleteSessionJwt(it)
             val intent = Intent(it, SignInActivity::class.java)
             it.startActivity(intent)
         }
@@ -115,7 +116,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        /*val callbackUser = object : ApolloCall.Callback<UserByIdQuery.Data>() {
+        val callbackUser = object : ApolloCall.Callback<UserByIdQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(TAG, "Failed to query user by id", e)
             }
@@ -129,7 +130,7 @@ class ProfileFragment : Fragment() {
                 }
 
             }
-        }TODO*/
+        }
 
         val profileFeed = PostsFragment()
         val args = Bundle()
@@ -140,7 +141,7 @@ class ProfileFragment : Fragment() {
 
         Client.queryFollowersFor(userId, callbackFollowers)
         Client.queryFollowingFor(userId, callbackFollowing)
-        //Client.queryUserById(userId, callbackUser) //TODO
+        Client.queryUserById(userId, callbackUser)
 
         return v
     }

@@ -5,6 +5,7 @@ import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.request.RequestHeaders
 import okhttp3.OkHttpClient
 import org.jetbrains.annotations.NotNull
 import un.eagle.elsa.*
@@ -15,27 +16,32 @@ object Client
     const val TAG = "Eagle.Client"
     const val URL = Constants.GRAPHQL_URL
 
-    val apollo: ApolloClient = reset()
+    private var apollo: ApolloClient = reset("")
 
-    fun reset(
-        //token: String = BuildConfig.CONTENTFUL_DELIVERY_TOKEN
-    ): ApolloClient {
+    private fun addBearer(token: String): String {
+        return "Bearer $token"
+    }
+
+
+    fun reset(token: String): ApolloClient {
+        Log.d(TAG, "SESSION TOKEN RESET TO: $token" )
         val httpClient: OkHttpClient = OkHttpClient
             .Builder()
             .addInterceptor { chain ->
                 chain.proceed(
                     chain.request().newBuilder()
-                        //addHeader( "Authorization",  "Bearer $token" )
+                        .addHeader( "Authorization",  addBearer(token) )
                         .build()
                 )
             }
             .build()
 
-        return ApolloClient
+        apollo = ApolloClient
             .builder()
             .serverUrl(URL)
             .okHttpClient(httpClient)
             .build()
+        return apollo
     }
 
     fun createNewUser(
@@ -102,7 +108,7 @@ object Client
         userId: String,
         callback: ApolloCall.Callback<ProfileFeedForUserQuery.Data>
     ) {
-        Log.d(TAG, "getHomeFeedFor($userId)")
+        Log.d(TAG, "getProfileFeedFor($userId)")
         apollo.query(
             ProfileFeedForUserQuery.builder().id(userId).build()
         ).enqueue ( callback )
@@ -116,6 +122,17 @@ object Client
         Log.d(TAG, "queryFollowersFor($userId)")
         apollo.query(
             FollowingQuery.builder().userId(userId).build()
+        ).enqueue(callback)
+    }
+
+    fun addToken(
+        userId: String,
+        token: String,
+        callback: ApolloCall.Callback<AddTokenMutation.Data>
+    ) {
+        Log.d(TAG, "queryFollowersFor($userId)")
+        apollo.mutate(
+            AddTokenMutation.builder().userId(userId).token(token).build()
         ).enqueue(callback)
     }
 
@@ -191,6 +208,15 @@ object Client
         Log.d(TAG, "queryNotificationsForUser($userId)")
         apollo.query(
             NotificationsForUserQuery.builder().userId(userId).build()
+        ).enqueue(callback)
+    }
+
+    fun getPlaylist(
+        id: String,
+        callback: ApolloCall.Callback<GetMusicListQuery.Data>) {
+        Log.d(TAG, "getPlaylist")
+        apollo.query(
+            GetMusicListQuery.builder().id(id).build()
         ).enqueue(callback)
     }
 

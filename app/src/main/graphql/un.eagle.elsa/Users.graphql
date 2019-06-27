@@ -69,6 +69,7 @@ mutation createNewUserSession(
 ) {
     createNewUserSession(user: { email: $email, password: $password} ) {
         jwt
+        id
     }
 }
 
@@ -148,5 +149,23 @@ query notificationsForUser($userId: String!) {
         post_id
         content
         follower_name
+    }
+}
+
+mutation addToken($userId: String!, $token: String!) {
+    addToken( token: {
+        user_id: $userId,
+        token: $token} )
+    {
+        user_id
+        tokens
+    }
+}
+
+
+query getMusicList($id: String!) {
+    getMusicList(id: $id) {
+        name
+        url
     }
 }

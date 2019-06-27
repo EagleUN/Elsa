@@ -17,10 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import un.eagle.elsa.CreateNewUserSessionMutation
-import un.eagle.elsa.ElsaPreferences
+import un.eagle.elsa.*
 
-import un.eagle.elsa.R
 import un.eagle.elsa.graphql.Client
 
 class SignInActivity : AppCompatActivity() {
@@ -54,7 +52,7 @@ class SignInActivity : AppCompatActivity() {
 
         // A placeholder password validation check
         private fun isPasswordValid(password: String): Boolean {
-            return password.length > 8
+            return password.length >= Constants.MIN_PASSWORD_LENGTH;
         }
     }
 
@@ -119,13 +117,24 @@ class SignInActivity : AppCompatActivity() {
 
             override fun onResponse(response: Response<CreateNewUserSessionMutation.Data>) {
                 val r = response.data()?.createNewUserSession()
+                val userId =  r?.id()!!
                 val token = r?.jwt()
                 if ( r == null || token == null ) {
                     showLoginFailed(R.string.login_failed)
                 }
                 else {
+                    Client.reset(token)
+                    Client.addToken(userId, token, object : ApolloCall.Callback<AddTokenMutation.Data>() {
+                        override fun onFailure(e: ApolloException) {
+                            Log.d(TAG, "Couldn't post session token")
+                        }
 
-                    ElsaPreferences.setUserId(context, token)
+                        override fun onResponse(response: Response<AddTokenMutation.Data>) {
+                            Log.d(TAG, "Successfully posted token")
+                        }
+                    })
+                    ElsaPreferences.setUserId(context, userId)
+                    ElsaPreferences.setSessionJwt(context, token)
                     showLogginSuccessful()
                     goToMainActivity()
                 }

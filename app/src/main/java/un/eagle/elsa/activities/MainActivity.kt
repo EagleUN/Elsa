@@ -17,6 +17,7 @@ import un.eagle.elsa.fragments.PostsFragment
 import un.eagle.elsa.fragments.NotificationsFragment
 import un.eagle.elsa.fragments.ProfileFragment
 import un.eagle.elsa.fragments.OtherUserListFragment
+import un.eagle.elsa.graphql.Client
 
 class MainActivity : AppCompatActivity() {
 
@@ -87,11 +88,13 @@ class MainActivity : AppCompatActivity() {
         createNotificationChannel()
 
         val userId = ElsaPreferences.getUserId(this)
+        val sessionToken = ElsaPreferences.getSessionJwt(this)
         Log.d(TAG, "userId: $userId")
 
         //check if user is signed in
-        if ( userId != "" )
+        if ( sessionToken != "" )
         {
+            Client.reset(sessionToken)
             setContentView(R.layout.activity_main)
             val navView: BottomNavigationView = findViewById(R.id.nav_view)
             navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
