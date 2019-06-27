@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.iid.FirebaseInstanceId
 import un.eagle.elsa.Constants
 import un.eagle.elsa.ElsaPreferences
 import un.eagle.elsa.R
@@ -18,6 +20,7 @@ import un.eagle.elsa.fragments.NotificationsFragment
 import un.eagle.elsa.fragments.ProfileFragment
 import un.eagle.elsa.fragments.OtherUserListFragment
 import un.eagle.elsa.graphql.Client
+import un.eagle.elsa.services.NotificationsService
 
 class MainActivity : AppCompatActivity() {
 
@@ -83,6 +86,25 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun initFirebase(userId: String) {
+        FirebaseInstanceId.getInstance().instanceId
+        .addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d(TAG, "getInstanceId failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            val token = task.result?.token
+            // Get new Instance ID token
+            token?.let {
+                Log.d(TAG, "token is $token")
+                NotificationsService.sendRegistrationToServer(userId, token)
+            }
+        })
+    }
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createNotificationChannel()
@@ -94,6 +116,7 @@ class MainActivity : AppCompatActivity() {
         //check if user is signed in
         if ( sessionToken != "" )
         {
+            initFirebase(userId)
             Client.reset(sessionToken)
             setContentView(R.layout.activity_main)
             val navView: BottomNavigationView = findViewById(R.id.nav_view)

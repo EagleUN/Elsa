@@ -5,40 +5,22 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import un.eagle.elsa.AddTokenMutation
 import un.eagle.elsa.Constants
 import un.eagle.elsa.ElsaPreferences
 import un.eagle.elsa.R
 import un.eagle.elsa.activities.MainActivity
+import un.eagle.elsa.graphql.Client
 
 class NotificationsService : FirebaseMessagingService() {
 
-    companion object {
-        private const val TAG = "Eagle.NotificationsServ"
-    }
-
-
-    override fun onStart(intent: Intent?, startId: Int) {
-        super.onStart(intent, startId)
-        Log.d(TAG, "onStart of service")
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.d(TAG, "getInstanceId failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                val token = task.result?.token
-                // Get new Instance ID token
-                token?.let {
-                    Log.d(TAG, "token is $token")
-                    sendRegistrationToServer(token)
-                }
-            })
-    }
 
     /**
      * Called when message is received.
@@ -106,7 +88,8 @@ class NotificationsService : FirebaseMessagingService() {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        token?.let{ sendRegistrationToServer(token) }
+        val userId = ElsaPreferences.getUserId(this)
+        token?.let{ sendRegistrationToServer(userId, token) }
     }
     // [END on_new_token]
 
@@ -117,29 +100,32 @@ class NotificationsService : FirebaseMessagingService() {
         Log.d(TAG, "Short lived task is done.")
     }
 
-    /**
-     * Persist token to third-party servers.
-     *
-     * Modify this method to associate the user's FCM InstanceID token with any server-side account
-     * maintained by your application.
-     *
-     * @param token The new token.
-     */
-    private fun sendRegistrationToServer(token: String) {
-        token?.let {
-            val userId = ElsaPreferences.getUserId(this)
-            Log.d(TAG, "Send this token to the server $token")
-            /*Client.reset(token)
-            Client.addToken(userId, token, object : ApolloCall.Callback<AddTokenMutation.Data>() {
-                override fun onFailure(e: ApolloException) {
-                    Log.d(TAG, "Couldn't post session token")
-                }
 
-                override fun onResponse(response: Response<AddTokenMutation.Data>) {
-                    Log.d(TAG, "Successfully posted token")
-                }
-            })*/
-            ElsaPreferences.setSessionJwt(this, token)
+    companion object {
+
+        private const val TAG = "Eagle.NotificationsServ"
+
+        /**
+         * Persist token to third-party servers.
+         *
+         * Modify this method to associate the user's FCM InstanceID token with any server-side account
+         * maintained by your application.
+         *
+         * @param token The new token.
+         */
+        fun sendRegistrationToServer(userId: String, token: String) {
+            token?.let {
+                Log.d(TAG, "Send this token to the server $token")
+                Client.addToken(userId, token, object : ApolloCall.Callback<AddTokenMutation.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d(TAG, "Failed to add token $token")
+                    }
+
+                    override fun onResponse(response: Response<AddTokenMutation.Data>) {
+                        Log.d(TAG, "Successfully added token $token")
+                    }
+                })
+            }
         }
     }
 }

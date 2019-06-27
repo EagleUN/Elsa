@@ -124,15 +124,6 @@ class SignInActivity : AppCompatActivity() {
                 }
                 else {
                     Client.reset(token)
-                    Client.addToken(userId, token, object : ApolloCall.Callback<AddTokenMutation.Data>() {
-                        override fun onFailure(e: ApolloException) {
-                            Log.d(TAG, "Couldn't post session token")
-                        }
-
-                        override fun onResponse(response: Response<AddTokenMutation.Data>) {
-                            Log.d(TAG, "Successfully posted token")
-                        }
-                    })
                     ElsaPreferences.setUserId(context, userId)
                     ElsaPreferences.setSessionJwt(context, token)
                     showLogginSuccessful()

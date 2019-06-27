@@ -46,7 +46,7 @@ class NotificationsFragment : Fragment() {
                 val data = ArrayList<Notification>()
                 resList.forEach {
                     val noti = Notification(
-                        sourceUserName = it.follower(),
+                        sourceUserName = it.follower_name(),
                         notificationType = if ( it.type() == "share" ) Notification.SHARE else Notification.FOLLOW
                     )
                     data.add(noti)

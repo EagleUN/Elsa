@@ -70,11 +70,15 @@ class ProfileFragment : Fragment() {
         val emailTV          : TextView = v.findViewById(R.id.profile_email_textView)
         val followersTV      : TextView = v.findViewById(R.id.profile_followers_textView)
         val followingTV      : TextView = v.findViewById(R.id.profile_following_textView)
+        val musicList        : TextView = v.findViewById(R.id.profile_music_list_name)
+        val musicListUrl     : TextView = v.findViewById(R.id.profile_music_list_url)
+
         followersTV.text = ""
         followingTV.text = ""
         nameTV.text = ""
         emailTV.text = ""
         lastNameTV.text = ""
+        musicList.text = ""
 
         logOutButton.setOnClickListener { logOut() }
         updateDataButton.setOnClickListener { goToUpdateDataActivity() }
@@ -132,6 +136,29 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        val callbackFede = object : ApolloCall.Callback<GetMusicListQuery.Data>() {
+            override fun onFailure(e: ApolloException) {
+                Log.d(TAG, "Failed Fede's query")
+                musicListUrl.visibility = View.GONE
+                musicList.text = getString(R.string.no_music_list)
+
+            }
+
+            override fun onResponse(response: Response<GetMusicListQuery.Data>) {
+                val playlistName = response.data()?.musicList?.name()
+                val playlistUrl = response.data()?.musicList?.url()
+                if ( playlistName != null && playlistUrl != null ) {
+                    musicListUrl.text = playlistUrl
+                    musicList.text = getString(R.string.music_list, playlistName)
+                    musicListUrl.visibility = View.VISIBLE
+                }
+                else {
+                    musicListUrl.visibility = View.GONE
+                    musicList.text = getString(R.string.no_music_list)
+                }
+            }
+        }
+
         val profileFeed = PostsFragment()
         val args = Bundle()
         args.putInt(PostsFragment.TYPE, PostsFragment.PROFILE)
@@ -142,6 +169,7 @@ class ProfileFragment : Fragment() {
         Client.queryFollowersFor(userId, callbackFollowers)
         Client.queryFollowingFor(userId, callbackFollowing)
         Client.queryUserById(userId, callbackUser)
+        Client.getPlaylist(userId, callbackFede)
 
         return v
     }

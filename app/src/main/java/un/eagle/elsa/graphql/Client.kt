@@ -130,7 +130,7 @@ object Client
         token: String,
         callback: ApolloCall.Callback<AddTokenMutation.Data>
     ) {
-        Log.d(TAG, "queryFollowersFor($userId)")
+        Log.d(TAG, "addToken $token for user $userId")
         apollo.mutate(
             AddTokenMutation.builder().userId(userId).token(token).build()
         ).enqueue(callback)

@@ -8,7 +8,7 @@
     <string name="action_sign_in">Sign in</string>
     <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password must be >= 8 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="do_not_have_account">Do not have an account? Sign up here:</string>
 
@@ -91,4 +91,11 @@
     <!-- Notifications channel -->
     <string name="channel_name">EagleUN notifications channel</string>
     <string name="channel_description">Channel used by the EagleUN app to push notifications</string>
+
+
+    <!-- Strings -->
+    <string name="no_music_list">You have not created any music list :(</string>
+    <string name="music">Music:</string>
+    <string name="music_list">The last list that I created is %1$s</string>
+
 </resources>
