@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -67,9 +68,9 @@ class PostsFragment : Fragment() {
                 override fun onResponse(response: Response<HomeFeedForUserQuery.Data>) {
                     Log.d(TAG, "Successfully got home feed for user $userId")
 
-                    val homeFeedResponse = response.data()?.homeFeedForUser()!!
+                    val homeFeedResponse = response.data()?.homeFeedForUser()
                     val data = ArrayList<Post>()
-                    homeFeedResponse.forEach {
+                    homeFeedResponse?.forEach {
                         val p = Post(
                             id = it.id(),
                             authorId = it.idCreator(),
@@ -84,7 +85,8 @@ class PostsFragment : Fragment() {
                     activity.runOnUiThread {
                         val postsAdapter = PostsAdapter(data, userId, PostsAdapter.HOME, activity)
                         postsView.adapter = postsAdapter
-
+                        if ( homeFeedResponse == null )
+                            Toast.makeText(activity,"No response :C", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -104,9 +106,9 @@ class PostsFragment : Fragment() {
                 override fun onResponse(response: Response<ProfileFeedForUserQuery.Data>) {
                     Log.d(TAG, "Successfully got profile feed for user $userId")
 
-                    val homeFeedResponse = response.data()?.profileFeedForUser()!!
+                    val homeFeedResponse = response.data()?.profileFeedForUser()
                     val data = ArrayList<Post>()
-                    homeFeedResponse.forEach {
+                    homeFeedResponse?.forEach {
                         val p = Post(
                             id = it.id(),
                             authorId = it.idCreator(),
@@ -121,6 +123,8 @@ class PostsFragment : Fragment() {
                     activity.runOnUiThread {
                         val postsAdapter = PostsAdapter(data, userId, PostsAdapter.PROFILE, activity)
                         postsView.adapter = postsAdapter
+                        if (homeFeedResponse == null)
+                            Toast.makeText(activity, "No response :C", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

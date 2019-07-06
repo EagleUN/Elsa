@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun initFirebase(userId: String) {
+    private fun initFirebase(userId: String) {
         FirebaseInstanceId.getInstance().instanceId
         .addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {

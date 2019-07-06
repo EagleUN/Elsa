@@ -32,12 +32,8 @@ class SignInActivity : AppCompatActivity() {
             if (!isEmailValid(username)) {
                 // R.string.invalid_username
                 login.isEnabled = false
-            } else if (!isPasswordValid(password)) {
-                //R.string.invalid_password
-                login.isEnabled = false
             } else {
-                //isDataValid = true
-                login.isEnabled = true
+                login.isEnabled = isPasswordValid(password)
             }
         }
 

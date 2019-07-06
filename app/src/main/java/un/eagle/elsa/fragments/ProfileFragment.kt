@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import com.google.firebase.iid.FirebaseInstanceId
 import un.eagle.elsa.*
 import un.eagle.elsa.activities.FollowersActivity
 import un.eagle.elsa.activities.FollowingActivity
@@ -49,6 +50,8 @@ class ProfileFragment : Fragment() {
         activity?.let {
             ElsaPreferences.deleteUserId(it)
             ElsaPreferences.deleteSessionJwt(it)
+            try{FirebaseInstanceId.getInstance().deleteInstanceId()}
+            catch(e: Exception){}
             val intent = Intent(it, SignInActivity::class.java)
             it.startActivity(intent)
         }
@@ -78,13 +81,11 @@ class ProfileFragment : Fragment() {
         nameTV.text = ""
         emailTV.text = ""
         lastNameTV.text = ""
-        musicList.text = ""
 
         logOutButton.setOnClickListener { logOut() }
         updateDataButton.setOnClickListener { goToUpdateDataActivity() }
         followersTV.setOnClickListener { goToFollowersActivity() } //TODO
         followingTV.setOnClickListener { goToFollowingActivity() } //TODO
-
 
         val activity = activity!!
         val userId = ElsaPreferences.getUserId(activity)
@@ -120,6 +121,38 @@ class ProfileFragment : Fragment() {
             }
         }
 
+
+        val callbackFede = object : ApolloCall.Callback<GetMusicListQuery.Data>() {
+            override fun onFailure(e: ApolloException) {
+                Log.d(TAG, "Failed Fede's query")
+                musicList.text = getString(R.string.no_music_list)
+                musicList.visibility = View.VISIBLE
+                musicListUrl.visibility = View.GONE
+
+            }
+
+            override fun onResponse(response: Response<GetMusicListQuery.Data>) {
+                Log.d(TAG, "Successful Fede query")
+                activity.runOnUiThread {
+                    val playlistName = response.data()?.musicList?.name()
+                    val playlistUrl = response.data()?.musicList?.url()
+                    if ( playlistName != null || playlistUrl != null ) {
+                        musicListUrl.text = playlistUrl
+                        musicList.text = activity.getString(R.string.music_list, playlistName)
+                        musicList.visibility = View.VISIBLE
+                        musicListUrl.visibility = View.VISIBLE
+                    }
+                    else {
+
+                        musicList.text = activity.getString(R.string.no_music_list)
+                        musicList.visibility = View.VISIBLE
+                        musicListUrl.visibility = View.GONE
+
+                    }
+                }
+            }
+        }
+
         val callbackUser = object : ApolloCall.Callback<UserByIdQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(TAG, "Failed to query user by id", e)
@@ -136,29 +169,6 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        val callbackFede = object : ApolloCall.Callback<GetMusicListQuery.Data>() {
-            override fun onFailure(e: ApolloException) {
-                Log.d(TAG, "Failed Fede's query")
-                musicListUrl.visibility = View.GONE
-                musicList.text = getString(R.string.no_music_list)
-
-            }
-
-            override fun onResponse(response: Response<GetMusicListQuery.Data>) {
-                val playlistName = response.data()?.musicList?.name()
-                val playlistUrl = response.data()?.musicList?.url()
-                if ( playlistName != null && playlistUrl != null ) {
-                    musicListUrl.text = playlistUrl
-                    musicList.text = getString(R.string.music_list, playlistName)
-                    musicListUrl.visibility = View.VISIBLE
-                }
-                else {
-                    musicListUrl.visibility = View.GONE
-                    musicList.text = getString(R.string.no_music_list)
-                }
-            }
-        }
-
         val profileFeed = PostsFragment()
         val args = Bundle()
         args.putInt(PostsFragment.TYPE, PostsFragment.PROFILE)
@@ -168,8 +178,8 @@ class ProfileFragment : Fragment() {
 
         Client.queryFollowersFor(userId, callbackFollowers)
         Client.queryFollowingFor(userId, callbackFollowing)
-        Client.queryUserById(userId, callbackUser)
         Client.getPlaylist(userId, callbackFede)
+        Client.queryUserById(userId, callbackUser)
 
         return v
     }
