@@ -17,6 +17,7 @@ mutation createUser (
     $name: String!,
     $last_name: String!,
     $lastnane: String!,
+    $username: String!,
     $email: String!,
     $password: String!,
     $password_confirmation: String!
@@ -26,6 +27,7 @@ mutation createUser (
         last_name: $last_name,
         username: $lastnane,
         email: $email,
+        username: $username,
         password: $password,
         password_confirmation: $password_confirmation
     }){

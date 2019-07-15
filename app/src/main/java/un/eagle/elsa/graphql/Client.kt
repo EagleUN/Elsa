@@ -48,6 +48,7 @@ object Client
         name: String,
         lastName: String,
         email: String,
+        username: String,
         password: String,
         passwordConfirmation: String,
         callback: ApolloCall.Callback<CreateUserMutation.Data> ) {
@@ -57,6 +58,7 @@ object Client
                 .name(name)
                 .last_name(lastName)
                 .password(password)
+                .username(username)
                 .password_confirmation(passwordConfirmation)
                 .email(email)
                 .build()

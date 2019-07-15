@@ -113,9 +113,9 @@ class SignInActivity : AppCompatActivity() {
 
             override fun onResponse(response: Response<CreateNewUserSessionMutation.Data>) {
                 val r = response.data()?.createNewUserSession()
-                val userId =  r?.id()!!
+                val userId =  r?.id()
                 val token = r?.jwt()
-                if ( r == null || token == null ) {
+                if ( userId == null || token == null ) {
                     showLoginFailed(R.string.login_failed)
                 }
                 else {

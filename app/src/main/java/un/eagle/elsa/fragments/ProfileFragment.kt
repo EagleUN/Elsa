@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
@@ -125,9 +126,13 @@ class ProfileFragment : Fragment() {
         val callbackFede = object : ApolloCall.Callback<GetMusicListQuery.Data>() {
             override fun onFailure(e: ApolloException) {
                 Log.d(TAG, "Failed Fede's query")
-                musicList.text = getString(R.string.no_music_list)
-                musicList.visibility = View.VISIBLE
-                musicListUrl.visibility = View.GONE
+                activity.runOnUiThread {
+                    try {
+                        musicList.text = getString(R.string.no_music_list)
+                        musicList.visibility = View.VISIBLE
+                        musicListUrl.visibility = View.GONE
+                    } catch ( e: Exception ) { }
+                }
 
             }
 
@@ -137,17 +142,19 @@ class ProfileFragment : Fragment() {
                     val playlistName = response.data()?.musicList?.name()
                     val playlistUrl = response.data()?.musicList?.url()
                     if ( playlistName != null || playlistUrl != null ) {
-                        musicListUrl.text = playlistUrl
-                        musicList.text = activity.getString(R.string.music_list, playlistName)
-                        musicList.visibility = View.VISIBLE
-                        musicListUrl.visibility = View.VISIBLE
+                        try {
+                            musicListUrl.text = playlistUrl
+                            musicList.text = activity.getString(R.string.music_list, playlistName)
+                            musicList.visibility = View.VISIBLE
+                            musicListUrl.visibility = View.VISIBLE
+                        } catch ( e: Exception ) { }
                     }
                     else {
-
-                        musicList.text = activity.getString(R.string.no_music_list)
-                        musicList.visibility = View.VISIBLE
-                        musicListUrl.visibility = View.GONE
-
+                        try {
+                            musicList.text = activity.getString(R.string.no_music_list)
+                            musicList.visibility = View.VISIBLE
+                            musicListUrl.visibility = View.GONE
+                        } catch ( e: Exception ) { }
                     }
                 }
             }
@@ -159,11 +166,19 @@ class ProfileFragment : Fragment() {
             }
 
             override fun onResponse(response: Response<UserByIdQuery.Data>) {
-                val user = response.data()?.userById()!!
+                val user = response.data()?.userById()
+
                 activity.runOnUiThread{
-                    emailTV.text = user.email()
-                    nameTV.text = user.name()
-                    lastNameTV.text = user.last_name()
+                    if ( user == null )
+                    {
+                        Toast.makeText(activity, "There was a problem getting the user info", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        emailTV.text = user.email()
+                        nameTV.text = user.name()
+                        lastNameTV.text = user.last_name()
+                    }
                 }
 
             }

@@ -42,9 +42,9 @@ class NotificationsFragment : Fragment() {
             }
 
             override fun onResponse(response: Response<NotificationsForUserQuery.Data>) {
-                val resList = response.data()?.NotificationByUser()!!
+                val resList = response.data()?.NotificationByUser()
                 val data = ArrayList<Notification>()
-                resList.forEach {
+                resList?.forEach {
                     val noti = Notification(
                         sourceUserName = it.follower_name(),
                         notificationType = if ( it.type() == "share" ) Notification.SHARE else Notification.FOLLOW

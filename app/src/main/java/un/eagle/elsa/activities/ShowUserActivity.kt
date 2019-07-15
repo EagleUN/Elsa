@@ -17,7 +17,6 @@ class ShowUserActivity : AppCompatActivity() {
     companion object {
         const val TAG = "Eagle.ShowUserActivity"
 
-
         const val USER_ID         = "Eagle.ID"
         const val USER_NAME       = "Eagle.UserName"
         const val USER_LAST_NAME  = "Eagle.LastName"
@@ -97,7 +96,6 @@ class ShowUserActivity : AppCompatActivity() {
 
             }
         }
-
 
         val callbackFollowing = object : ApolloCall.Callback<FollowingQuery.Data>() {
             override fun onFailure(e: ApolloException) {
