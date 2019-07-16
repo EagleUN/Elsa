@@ -29,6 +29,7 @@ class SingUpActivity : AppCompatActivity() {
 
         val userNameET                 = findViewById<EditText>(R.id.signUp_user_name)
         val userLastNameET             = findViewById<EditText>(R.id.signUp_user_lastName)
+        val userUsernameET             = findViewById<EditText>(R.id.signUp_user_username)
         val userEmailET                = findViewById<EditText>(R.id.signUp_user_email)
         val userPasswordET             = findViewById<EditText>(R.id.signUp_user_password)
         val userPasswordConfirmationET = findViewById<EditText>(R.id.signUp_user_passwordConfirmation)
@@ -67,10 +68,18 @@ class SingUpActivity : AppCompatActivity() {
         signUpButton.setOnClickListener {
             val name = userNameET.text.toString()
             val lastName = userLastNameET.text.toString()
+            val username = userUsernameET.text.toString()
             val email = userEmailET.text.toString()
             val password = userPasswordET.text.toString()
             val passwordConfirmation = userPasswordConfirmationET.text.toString()
-            Client.createNewUser(name, lastName, email, password, passwordConfirmation, callback );
+            Client.createNewUser(
+                name = name,
+                lastName = lastName,
+                username = username,
+                email = email,
+                password = password,
+                passwordConfirmation = passwordConfirmation,
+                callback = callback );
         }
     }
 

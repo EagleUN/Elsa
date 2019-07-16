@@ -30,7 +30,7 @@ object Client
             .addInterceptor { chain ->
                 chain.proceed(
                     chain.request().newBuilder()
-                        .addHeader( "Authorization",  addBearer(token) )
+                        .addHeader( Constants.Api.Headers.AUTH,  addBearer(token) )
                         .build()
                 )
             }

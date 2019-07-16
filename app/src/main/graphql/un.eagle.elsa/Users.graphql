@@ -16,7 +16,6 @@ query queryAllUsers {
 mutation createUser (
     $name: String!,
     $last_name: String!,
-    $lastnane: String!,
     $username: String!,
     $email: String!,
     $password: String!,
@@ -25,7 +24,6 @@ mutation createUser (
     createUser(user:{
         name: $name,
         last_name: $last_name,
-        username: $lastnane,
         email: $email,
         username: $username,
         password: $password,
